@@ -1,0 +1,27 @@
+name: qatar_ui
+description: Qatar UI library
+version: 0.0.1
+
+environment: 
+  sdk: ">=2.16.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+  fonts:
+    - family: Qatar2022
+      fonts:
+        - asset: assets/fonts/qatar-2022-font/static/Qatar2022Arabic-Medium.woff2
+       

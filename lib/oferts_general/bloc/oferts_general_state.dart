@@ -8,7 +8,7 @@ enum OfertsGeneralStatus {
 }
 
 class OfertsGeneralState extends Equatable {
-  const OfertsGeneralState({
+  OfertsGeneralState({
     required this.status,
     required this.listOferts,
   });
@@ -16,15 +16,15 @@ class OfertsGeneralState extends Equatable {
   OfertsGeneralState.initial()
       : this(
           status: OfertsGeneralStatus.initial,
-          listOferts: [],
+          listOferts: [{}],
         );
 
   final OfertsGeneralStatus status;
-  final List<Map<String, String>> listOferts;
+  final List<dynamic> listOferts;
 
   OfertsGeneralState copyWith({
     OfertsGeneralStatus? status,
-    List<Map<String, String>>? listOferts,
+    List<dynamic>? listOferts,
   }) {
     return OfertsGeneralState(
       status: status ?? this.status,

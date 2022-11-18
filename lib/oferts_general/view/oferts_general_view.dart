@@ -36,17 +36,37 @@ class OfertsGeneralView extends StatelessWidget {
         context.select((OfertsGeneralBloc bloc) => bloc.state.listOferts);
     final status =
         context.select((OfertsGeneralBloc bloc) => bloc.state.status);
-    return status == OfertsUserStatus.error
-        ? const Scaffold(
-            body: Center(
-              child: Text(
-                'No hay publicaciones activas en el momento',
+    return status == OfertsGeneralStatus.error
+        ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xff891638),
+              shadowColor: Colors.white,
+              elevation: 0,
+              title: const Text(
+                'Publicaciones',
                 style: TextStyle(
                   fontFamily: 'Qatar2022',
                   color: Colors.white,
                   fontSize: 25,
                 ),
               ),
+            ),
+            drawer: const _Drawer(),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Center(
+                  child: Text(
+                    'No hay publicaciones activas en el momento',
+                    style: TextStyle(
+                      fontFamily: 'Qatar2022',
+                      color: Colors.black,
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
           )
         : BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
@@ -87,11 +107,10 @@ class OfertsGeneralView extends StatelessWidget {
                           return _Ofert(
                             description: listPublications[index]['description']
                                 .toString(),
-                            statePlayer: listPublications[index]['stateFigure']
+                            statePlayer: listPublications[index]['state_damage']
                                 .toString(),
-                            nameUser:
-                                listPublications[index]['nameUser'].toString(),
-                            id: listPublications[index]['id'].toString(),
+                            id: listPublications[index]['publication_id']
+                                .toString(),
                           );
                         },
                         shrinkWrap: true,
@@ -216,13 +235,12 @@ class _Ofert extends StatelessWidget {
   const _Ofert({
     required this.description,
     required this.statePlayer,
-    required this.nameUser,
     required this.id,
   });
 
   final String description;
   final String statePlayer;
-  final String nameUser;
+
   final String id;
 
   @override
@@ -242,7 +260,6 @@ class _Ofert extends StatelessWidget {
         onPressed: (() {
           context.read<OfertsGeneralBloc>().add(OfertsGeneralSubmited(
                 id,
-                nameUser,
                 description,
                 statePlayer,
               ));
@@ -259,7 +276,7 @@ class _Ofert extends StatelessWidget {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            'Quiere realizar una oferta al usuario $nameUser por la figurita  $description',
+                            'Quiere realizar una oferta al usuario  por la figurita  $description',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Colors.white,

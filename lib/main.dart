@@ -1,5 +1,6 @@
 import 'package:bdd2022/login/login.dart';
 import 'package:bdd2022/ofert_someone/ofert_someone.dart';
+import 'package:bdd2022/sign_in/view/view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -62,7 +63,7 @@ class MyHomePage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 10.0),
               child: TextButton(
                 onPressed: (() {
-                  Navigator.of(context).push(OfertSomeoneRoute.route());
+                  Navigator.of(context).push(SignInRoute.route());
                 }),
                 style: TextButton.styleFrom(
                     shape: const StadiumBorder(),

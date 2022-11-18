@@ -8,22 +8,22 @@ enum ActivePublicationsStatus {
 }
 
 class ActivePublicationsState extends Equatable {
-  const ActivePublicationsState({
+  ActivePublicationsState({
     required this.status,
     required this.listPublications,
   });
 
-  const ActivePublicationsState.initial()
+  ActivePublicationsState.initial()
       : this(
           status: ActivePublicationsStatus.initial,
-          listPublications: const [],
+          listPublications: [{}],
         );
 
   final ActivePublicationsStatus status;
-  final List<Publication> listPublications;
+  List<dynamic> listPublications;
 
   ActivePublicationsState copyWith(
-      {ActivePublicationsStatus? status, List<Publication>? listPublications}) {
+      {ActivePublicationsStatus? status, List<dynamic>? listPublications}) {
     return ActivePublicationsState(
       status: status ?? this.status,
       listPublications: listPublications ?? this.listPublications,

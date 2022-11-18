@@ -1,3 +1,4 @@
+import 'package:bdd2022/active_oferts/active_oferts.dart';
 import 'package:bdd2022/active_publications/bloc/active_publications_bloc.dart';
 import 'package:bdd2022/models/publication.dart';
 import 'package:bdd2022/oferts_user/view/view.dart';
@@ -9,23 +10,27 @@ class ActivePublicationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final json = [
-      {
-        'namePlayer': 'Luis Suarez',
-        'stateOfert': 'Activa',
-        'idOferts': '23',
-      },
-      {
-        'namePlayer': 'Messi',
-        'stateOfert': 'Desactivada',
-        'idOferts': null,
-      },
-      {
-        'namePlayer': 'Cavani',
-        'stateOfert': 'Desactivada',
-        'idOferts': null,
-      },
-    ];
+    final status =
+        context.select((ActivePublicationsBloc bloc) => bloc.state.status);
+    final listPublications = context
+        .select((ActivePublicationsBloc bloc) => bloc.state.listPublications);
+    // final listPublications = [
+    //   {
+    //     'namePlayer': 'Luis Suarez',
+    //     'stateOfert': 'Activa',
+    //     'idOferts': '23',
+    //   },
+    //   {
+    //     'namePlayer': 'Messi',
+    //     'stateOfert': 'Desactivada',
+    //     'idOferts': null,
+    //   },
+    //   {
+    //     'namePlayer': 'Cavani',
+    //     'stateOfert': 'Desactivada',
+    //     'idOferts': null,
+    //   },
+    // ];
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -52,14 +57,14 @@ class ActivePublicationsView extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
-              itemCount: json.length,
+              itemCount: listPublications.length,
               shrinkWrap: true,
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
                 return _Publication(
-                  namePlayer: json[index]['namePlayer'].toString(),
-                  stateOfert: json[index]['stateOfert'].toString(),
-                  idOfert: json[index]['idOfert'].toString(),
+                  namePlayer: listPublications[index]['description'].toString(),
+                  stateOfert: listPublications[index]['activated'].toString(),
+                  idOfert: listPublications[index]['publication_id'].toString(),
                 );
               },
             ),
@@ -106,16 +111,16 @@ class _Publication extends StatelessWidget {
           backgroundColor: const Color(0xff891638),
           disabledForegroundColor: Colors.white.withOpacity(0.38),
         ),
-        child: stateOfert == 'Activa'
+        child: stateOfert == 'f'
             ? const Text(
-                'Desactivar',
+                'Activar',
                 style: TextStyle(
                   fontFamily: 'Qatar2022',
                   color: Colors.white,
                 ),
               )
             : const Text(
-                'Activado',
+                'Descativar',
                 style: TextStyle(
                   fontFamily: 'Qatar2022',
                   color: Colors.white,

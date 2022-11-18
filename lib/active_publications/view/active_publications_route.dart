@@ -9,7 +9,9 @@ class ActivePublicationsRoute extends StatelessWidget {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
-          create: (_) => ActivePublicationsBloc(),
+          lazy: false,
+          create: (_) =>
+              ActivePublicationsBloc()..add(const ActivePublicationsGet()),
           child: const ActivePublicationsView(),
         );
       },

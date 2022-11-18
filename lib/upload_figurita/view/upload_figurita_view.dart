@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum EstadoFigurita { bueno, malo, regular }
+enum EstadoFigurita { Bueno, Malo, Regular }
 
 class UploadFiguritaView extends StatelessWidget {
   const UploadFiguritaView({Key? key}) : super(key: key);
@@ -107,7 +107,7 @@ class _Estado extends StatefulWidget {
 }
 
 class _EstadoState extends State<_Estado> {
-  final EstadoFigurita _character = EstadoFigurita.bueno;
+  final EstadoFigurita _character = EstadoFigurita.Bueno;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -128,7 +128,7 @@ class _EstadoState extends State<_Estado> {
             fillColor: MaterialStateProperty.all(
               const Color(0xff891638),
             ),
-            value: EstadoFigurita.bueno,
+            value: EstadoFigurita.Bueno,
             groupValue: _character,
             onChanged: (EstadoFigurita? value) {
               context
@@ -146,7 +146,7 @@ class _EstadoState extends State<_Estado> {
             fillColor: MaterialStateProperty.all(
               const Color(0xff891638),
             ),
-            value: EstadoFigurita.malo,
+            value: EstadoFigurita.Malo,
             groupValue: _character,
             onChanged: (EstadoFigurita? value) {
               context
@@ -164,7 +164,7 @@ class _EstadoState extends State<_Estado> {
             fillColor: MaterialStateProperty.all(
               const Color(0xff891638),
             ),
-            value: EstadoFigurita.regular,
+            value: EstadoFigurita.Regular,
             groupValue: _character,
             onChanged: (EstadoFigurita? value) {
               context

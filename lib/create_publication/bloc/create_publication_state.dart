@@ -16,15 +16,15 @@ class CreatePublicationState extends Equatable {
   CreatePublicationState.initial()
       : this(
           status: CreatePublicationStatus.initial,
-          listFigures: [],
+          listFigures: [{}],
         );
 
   final CreatePublicationStatus status;
-  List<Map<String, String>> listFigures;
+  List<dynamic> listFigures;
 
   CreatePublicationState copyWith({
     CreatePublicationStatus? status,
-    List<Map<String, String>>? listFigures,
+    List<dynamic>? listFigures,
   }) {
     return CreatePublicationState(
       status: status ?? this.status,

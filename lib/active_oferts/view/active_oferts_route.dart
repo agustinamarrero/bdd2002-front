@@ -9,6 +9,7 @@ class ActiveOfertsRoute extends StatelessWidget {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
+          lazy: false,
           create: (_) => ActiveOfertsBloc(),
           child: ActiveOfertsView(),
         );

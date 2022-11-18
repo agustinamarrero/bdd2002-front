@@ -79,8 +79,9 @@ class CreatePublicationView extends StatelessWidget {
                     itemCount: listFigures.length,
                     itemBuilder: ((context, index) {
                       return _Figuritas(
-                        namePlayer: listFigures[index]['name'].toString(),
-                        id: listFigures[index]['id'].toString(),
+                        namePlayer:
+                            listFigures[index]['description'].toString(),
+                        id: listFigures[index]['number'].toString(),
                       );
                     }))
               ],

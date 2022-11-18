@@ -22,18 +22,17 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
     final email = prefs.getString('email');
     Uri url = Uri.parse('http://localhost:8080/publications/${email!}');
     final response = await http.get(url);
-    final oferts = json.decode(response.body);
-    if (oferts == []) {
+    final publications = json.decode(response.body);
+    if (publications['publications'].toString() == '[]') {
       emit(
         state.copyWith(
-          listOferts: oferts,
           status: OfertsGeneralStatus.error,
         ),
       );
     } else {
       emit(
         state.copyWith(
-          listOferts: oferts,
+          listOferts: publications['publications'],
           status: OfertsGeneralStatus.loaded,
         ),
       );
@@ -46,7 +45,7 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('description', event.description);
       await prefs.setString('stateFigure', event.stateFigure);
-      await prefs.setString('nameUser', event.nameUser);
+
       await prefs.setString('id', event.id);
       emit(
         state.copyWith(

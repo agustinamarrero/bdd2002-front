@@ -12,7 +12,7 @@ part 'active_publications_state.dart';
 
 class ActivePublicationsBloc
     extends Bloc<ActivePublicationsEvent, ActivePublicationsState> {
-  ActivePublicationsBloc() : super(const ActivePublicationsState.initial()) {
+  ActivePublicationsBloc() : super(ActivePublicationsState.initial()) {
     on<ActivePublicationsGet>(_onActivePublicationsGet);
     on<ActivePublicationsStateChanged>(_onActivePublicationsStateChanged);
   }
@@ -22,21 +22,22 @@ class ActivePublicationsBloc
       Emitter<ActivePublicationsState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email');
-    Uri url = Uri.parse('http://localhost:8080/publicationsGet${email!}');
+    Uri url = Uri.parse('http://localhost:8080/mypublications/${email!}');
     final response = await http.get(url);
 
     final publications = json.decode(response.body);
     if (publications == []) {
       emit(
         state.copyWith(
-          listPublications: publications,
+          listPublications: publications['publications'],
           status: ActivePublicationsStatus.error,
         ),
       );
     } else {
+     
       emit(
         state.copyWith(
-          listPublications: publications,
+          listPublications: publications['publications'],
           status: ActivePublicationsStatus.loaded,
         ),
       );
@@ -47,15 +48,18 @@ class ActivePublicationsBloc
       ActivePublicationsStateChanged event,
       Emitter<ActivePublicationsState> emit) async {
     try {
-      Publication publication = Publication(event.publication.namePlayer,
-          event.publication.statePublication, event.publication.id);
+      // Publication publication = Publication(event.publication.namePlayer,
+      //     event.publication.statePublication, event.publication.id);
+      final publication = {
+        'publication_id': int.parse(event.publication.id),
+        'activate': event.publication.statePublication == 'f' ? true : false,
+      };
+      Uri url = Uri.parse('http://localhost:8080/activate');
 
-      Uri url = Uri.parse('http://localhost:8080/editPublication');
-
-      var body = publication.toJson();
+      // var body = publication.toJson();
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
-          body: json.encode(body));
+          body: json.encode(publication));
       emit(
         state.copyWith(
           status: ActivePublicationsStatus.loaded,
@@ -63,7 +67,7 @@ class ActivePublicationsBloc
       );
     } catch (e) {
       emit(
-        state.copyWith(
+        state.copyWith( 
           status: ActivePublicationsStatus.error,
         ),
       );

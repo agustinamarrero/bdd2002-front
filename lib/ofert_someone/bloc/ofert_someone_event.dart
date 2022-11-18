@@ -17,3 +17,9 @@ class OfertSomeoneGetFigures extends OfertSomeoneEvent {
   @override
   List<Object?> get props => [];
 }
+
+class OfertSomeoneCreate extends OfertSomeoneEvent {
+  const OfertSomeoneCreate();
+  @override
+  List<Object?> get props => [];
+}

@@ -10,7 +10,7 @@ class OfertsGeneralRoute extends StatelessWidget {
       builder: (ctx) {
         return BlocProvider(
           create: (_) => OfertsGeneralBloc()..add(const OfertsGeneralGet()),
-          child: OfertsGeneralView(),
+          child: const OfertsGeneralView(),
         );
       },
     );
@@ -18,6 +18,6 @@ class OfertsGeneralRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OfertsGeneralView();
+    return const OfertsGeneralView();
   }
 }

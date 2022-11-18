@@ -5,6 +5,7 @@ import 'package:bdd2022/models/publication.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'active_publications_event.dart';
 part 'active_publications_state.dart';
@@ -19,15 +20,27 @@ class ActivePublicationsBloc
   //Ejecutar para obtener toda la lista de publicaciones
   FutureOr<void> _onActivePublicationsGet(ActivePublicationsGet event,
       Emitter<ActivePublicationsState> emit) async {
-    Uri url = Uri.parse('http://localhost:8080/publicationsGet');
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    Uri url = Uri.parse('http://localhost:8080/publicationsGet${email!}');
     final response = await http.get(url);
+
     final publications = json.decode(response.body);
-    emit(
-      state.copyWith(
-        listPublications: publications,
-        status: ActivePublicationsStatus.loaded,
-      ),
-    );
+    if (publications == []) {
+      emit(
+        state.copyWith(
+          listPublications: publications,
+          status: ActivePublicationsStatus.error,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          listPublications: publications,
+          status: ActivePublicationsStatus.loaded,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _onActivePublicationsStateChanged(

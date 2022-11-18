@@ -13,10 +13,10 @@ class OfertsGeneralState extends Equatable {
     required this.listOferts,
   });
 
-  const OfertsGeneralState.initial()
+  OfertsGeneralState.initial()
       : this(
           status: OfertsGeneralStatus.initial,
-          listOferts: const [],
+          listOferts: [],
         );
 
   final OfertsGeneralStatus status;

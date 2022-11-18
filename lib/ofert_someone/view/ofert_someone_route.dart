@@ -11,8 +11,9 @@ class OfertSomeoneRoute extends StatelessWidget {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
-          create: (_) => OfertSomeoneBloc()..add(const OfertSomeoneSetId()),
-          child: const OfertSomeoneView(),
+          create: (_) =>
+              OfertSomeoneBloc()..add(const OfertSomeoneGetFigures()),
+          child: OfertSomeoneView(),
         );
       },
     );
@@ -20,6 +21,6 @@ class OfertSomeoneRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const OfertSomeoneView();
+    return OfertSomeoneView();
   }
 }

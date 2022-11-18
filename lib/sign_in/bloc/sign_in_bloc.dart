@@ -59,6 +59,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             status: SignInStatus.loaded,
           ),
         );
+      } else {
+        emit(
+          state.copyWith(
+            status: SignInStatus.error,
+          ),
+        );
       }
     } catch (e) {
       emit(

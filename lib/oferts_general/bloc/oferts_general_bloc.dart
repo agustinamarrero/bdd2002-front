@@ -10,7 +10,7 @@ part 'oferts_general_event.dart';
 part 'oferts_general_state.dart';
 
 class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
-  OfertsGeneralBloc() : super(const OfertsGeneralState.initial()) {
+  OfertsGeneralBloc() : super(OfertsGeneralState.initial()) {
     on<OfertsGeneralGet>(_onOfertsGeneralGet);
     on<OfertsGeneralSubmited>(_onOfertsGeneralSubmited);
   }
@@ -20,7 +20,7 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
       OfertsGeneralGet event, Emitter<OfertsGeneralState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email');
-    Uri url = Uri.parse('http://localhost:8080/publications/' + email!);
+    Uri url = Uri.parse('http://localhost:8080/publications/${email!}');
     final response = await http.get(url);
     final oferts = json.decode(response.body);
     if (oferts == []) {
@@ -42,29 +42,17 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
 
   FutureOr<void> _onOfertsGeneralSubmited(
       OfertsGeneralSubmited event, Emitter<OfertsGeneralState> emit) async {
-    // Map<String, dynamic> user = {
-    //   'namePlayer': event.namePlayer,
-    //   'stateFigure': event.statePlayer,
-    //   'nameUser': event.nameUser,
-    //   'idOferta': event.id,
-    // };
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('description', event.description);
       await prefs.setString('stateFigure', event.stateFigure);
       await prefs.setString('nameUser', event.nameUser);
       await prefs.setString('id', event.id);
-
-      // Uri url = Uri.parse('http://localhost:8080/users');
-      // var response = await http.post(url,
-      //     headers: {"Content-Type": "application/json"},
-      //     body: json.encode(user));
-      // emit(
-      //   state.copyWith(
-      //     status: OfertsGeneralStatus.loaded,
-      //   ),
-      // );
-      //Si todo ok --> Mandar msj ok y redireccionarlo.
+      emit(
+        state.copyWith(
+          status: OfertsGeneralStatus.loaded,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

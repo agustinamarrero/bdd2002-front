@@ -8,24 +8,32 @@ enum OfertSomeoneStatus {
 }
 
 class OfertSomeoneState extends Equatable {
-  const OfertSomeoneState({
+  OfertSomeoneState({
     required this.status,
     required this.idPublication,
+    required this.listFigures,
   });
 
-  const OfertSomeoneState.initial()
-      : this(status: OfertSomeoneStatus.initial, idPublication: '');
+  OfertSomeoneState.initial()
+      : this(
+          status: OfertSomeoneStatus.initial,
+          idPublication: '',
+          listFigures: [],
+        );
 
   final OfertSomeoneStatus status;
   final String idPublication;
+  List<Map<String, String>> listFigures;
 
   OfertSomeoneState copyWith({
     OfertSomeoneStatus? status,
     String? idPublication,
+    List<Map<String, String>>? listFigures,
   }) {
     return OfertSomeoneState(
       status: status ?? this.status,
       idPublication: idPublication ?? this.idPublication,
+      listFigures: listFigures ?? this.listFigures,
     );
   }
 
@@ -33,5 +41,6 @@ class OfertSomeoneState extends Equatable {
   List<Object> get props => [
         status,
         idPublication,
+        listFigures,
       ];
 }

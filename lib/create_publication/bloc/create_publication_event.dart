@@ -19,3 +19,9 @@ class CreatePublicationSubmited extends CreatePublicationEvent {
         id,
       ];
 }
+
+class CreatePublicationsGetFigurita extends CreatePublicationEvent {
+  const CreatePublicationsGetFigurita();
+  @override
+  List<Object?> get props => [];
+}

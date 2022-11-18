@@ -8,27 +8,33 @@ enum CreatePublicationStatus {
 }
 
 class CreatePublicationState extends Equatable {
-  const CreatePublicationState({
+  CreatePublicationState({
     required this.status,
+    required this.listFigures,
   });
 
-  const CreatePublicationState.initial()
+  CreatePublicationState.initial()
       : this(
           status: CreatePublicationStatus.initial,
+          listFigures: [],
         );
 
   final CreatePublicationStatus status;
+  List<Map<String, String>> listFigures;
 
   CreatePublicationState copyWith({
     CreatePublicationStatus? status,
+    List<Map<String, String>>? listFigures,
   }) {
     return CreatePublicationState(
       status: status ?? this.status,
+      listFigures: listFigures ?? this.listFigures,
     );
   }
 
   @override
   List<Object> get props => [
         status,
+        listFigures,
       ];
 }

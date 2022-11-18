@@ -1,87 +1,110 @@
+import 'package:bdd2022/oferts_user/oferts_user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertsUserView extends StatelessWidget {
   const OfertsUserView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff891638),
-        shadowColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Ofertas',
-          style: TextStyle(
-            fontFamily: 'Qatar2022',
-            color: Colors.white,
-            fontSize: 25,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Aqui puede observar las ofertas que hicieron sobre sus figuritas',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Qatar2022',
-                fontSize: 17,
+    final listPublications =
+        context.select((OfertsUserBloc bloc) => bloc.state.listOferts);
+    final status = context.select((OfertsUserBloc bloc) => bloc.state.status);
+    return status == OfertsUserStatus.error
+        ? const Scaffold(
+            body: Center(
+              child: Text(
+                'No hay publicaciones activas en el momento',
+                style: TextStyle(
+                  fontFamily: 'Qatar2022',
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
               ),
             ),
-          ),
-          Directionality(
-            textDirection: TextDirection.ltr,
-            child: _Card(),
-          ),
-        ],
-      )),
-    );
+          )
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xff891638),
+              shadowColor: Colors.white,
+              elevation: 0,
+              title: const Text(
+                'Ofertas',
+                style: TextStyle(
+                  fontFamily: 'Qatar2022',
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            body: SingleChildScrollView(
+                child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Aqui puede observar las ofertas que hicieron sobre sus figuritas',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Qatar2022',
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: _Card(
+                    listPublications: listPublications,
+                  ),
+                ),
+              ],
+            )),
+          );
   }
 }
 
 class _Card extends StatelessWidget {
-  _Card({
+  const _Card({
     Key? key,
+    required this.listPublications,
   }) : super(key: key);
-  final json = [
-    {
-      'namePlayer': 'Luis Suarez',
-      'figures': [
-        {
-          'namePlayer': 'Messi',
-        },
-        {
-          'namePlayer': 'Canvani',
-        },
-        {
-          'namePlayer': 'Pepe',
-        }
-      ],
-      'stateOfert': 'No aceptada',
-    },
-    {
-      'namePlayer': 'Messi',
-      'figures': [
-        {
-          'namePlayer': 'Juan',
-        },
-        {
-          'namePlayer': 'Luis',
-        },
-      ],
-      'stateOfert': 'Aceptada',
-    },
-  ];
+
+  final listPublications;
+  // final json = [
+  //   {
+  //     'namePlayer': 'Luis Suarez',
+  //     'figures': [
+  //       {
+  //         'namePlayer': 'Messi',
+  //       },
+  //       {
+  //         'namePlayer': 'Canvani',
+  //       },
+  //       {
+  //         'namePlayer': 'Pepe',
+  //       }
+  //     ],
+  //     'stateOfert': 'No aceptada',
+  //   },
+  //   {
+  //     'namePlayer': 'Messi',
+  //     'figures': [
+  //       {
+  //         'namePlayer': 'Juan',
+  //       },
+  //       {
+  //         'namePlayer': 'Luis',
+  //       },
+  //     ],
+  //     'stateOfert': 'Aceptada',
+  //   },
+  // ];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: json.length,
+        itemCount: listPublications.length,
         itemBuilder: ((context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -100,7 +123,7 @@ class _Card extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      json[index]['namePlayer'].toString(),
+                      listPublications[index]['namePlayer'].toString(),
                       style: const TextStyle(
                         fontFamily: 'Qatar2022',
                         fontSize: 15,
@@ -108,7 +131,7 @@ class _Card extends StatelessWidget {
                     ),
                   ),
                   _Ofers(
-                    figuresOferts: json[index]['figures'] as List,
+                    figuresOferts: listPublications[index]['figures'] as List,
                   ),
                 ],
               ),

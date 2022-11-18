@@ -9,8 +9,10 @@ class CreatePublicationRoute extends StatelessWidget {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
-          create: (_) => CreatePublicationBloc(),
-          child: CreatePublicationView(),
+          lazy: false,
+          create: (_) => CreatePublicationBloc()
+            ..add(const CreatePublicationsGetFigurita()),
+          child: const CreatePublicationView(),
         );
       },
     );
@@ -18,6 +20,6 @@ class CreatePublicationRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CreatePublicationView();
+    return const CreatePublicationView();
   }
 }

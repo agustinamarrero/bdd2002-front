@@ -4,20 +4,24 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'create_publication_event.dart';
 part 'create_publication_state.dart';
 
 class CreatePublicationBloc
     extends Bloc<CreatePublicationEvent, CreatePublicationState> {
-  CreatePublicationBloc() : super(const CreatePublicationState.initial()) {
+  CreatePublicationBloc() : super(CreatePublicationState.initial()) {
     on<CreatePublicationSubmited>(_onCreatePublicationSubmited);
+    on<CreatePublicationsGetFigurita>(_onCreatePublicationsGetFigurita);
   }
 
   FutureOr<void> _onCreatePublicationSubmited(CreatePublicationSubmited event,
       Emitter<CreatePublicationState> emit) async {
     try {
-      Uri url = Uri.parse('http://localhost:8080/createFigure');
+      final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email');
+      Uri url = Uri.parse('http://localhost:8080/createPublication/${email!}');
       final createPublication = {
         'id': event.id,
         'namePlayer': event.namePlayer,
@@ -26,16 +30,49 @@ class CreatePublicationBloc
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(createPublication));
-      //Si todo ok --> Mandar msj ok y redireccionarlo.
-      emit(
-        state.copyWith(
-          status: CreatePublicationStatus.loaded,
-        ),
-      );
+      final response2 = json.decode(response.body);
+      if (response2['accepted'] == true) {
+        emit(
+          state.copyWith(
+            status: CreatePublicationStatus.loaded,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: CreatePublicationStatus.error,
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(
           status: CreatePublicationStatus.error,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _onCreatePublicationsGetFigurita(
+      CreatePublicationsGetFigurita event,
+      Emitter<CreatePublicationState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    Uri url = Uri.parse('http://localhost:8080/getFigures/${email!}');
+    final response = await http.get(url);
+    final figures = json.decode(response.body);
+    if (figures == []) {
+      emit(
+        state.copyWith(
+          listFigures: figures,
+          status: CreatePublicationStatus.error,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          listFigures: figures,
+          status: CreatePublicationStatus.loaded,
         ),
       );
     }

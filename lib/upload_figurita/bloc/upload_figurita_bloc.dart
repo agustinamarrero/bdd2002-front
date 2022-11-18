@@ -53,13 +53,20 @@ class UploadFiguritaBloc
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(body));
-      //Si todo ok --> Mandar msj ok y redireccionarlo.
-      //HACER LO DEL ACCEPTED!
-      emit(
-        state.copyWith(
-          status: UploadFiguritaStatus.loaded,
-        ),
-      );
+      final response2 = json.decode(response.body);
+      if (response2['accepted'] == true) {
+        emit(
+          state.copyWith(
+            status: UploadFiguritaStatus.loaded,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: UploadFiguritaStatus.error,
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(

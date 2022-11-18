@@ -3,82 +3,106 @@ import 'package:bdd2022/active_publications/view/active_publications_route.dart'
 import 'package:bdd2022/create_publication/create_publication.dart';
 import 'package:bdd2022/ofert_someone/ofert_someone.dart';
 import 'package:bdd2022/oferts_general/oferts_general.dart';
+import 'package:bdd2022/oferts_user/oferts_user.dart';
 import 'package:bdd2022/upload_figurita/upload_figurita.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertsGeneralView extends StatelessWidget {
-  OfertsGeneralView({Key? key}) : super(key: key);
-  final listPublications = [
-    {
-      'description': 'Luis Suarez',
-      'stateFigure': 'Bueno',
-      'nameUser': 'Anakaprielian',
-      'id': '1'
-    },
-    {
-      'description': 'Messi',
-      'stateFigure': 'Malo',
-      'nameUser': 'GuzCorrea',
-      'id': '2'
-    },
-    {
-      'description': 'Cavani',
-      'stateFigure': 'Regular',
-      'nameUser': 'AgusMarrero',
-      'id': '3'
-    },
-  ];
+  const OfertsGeneralView({Key? key}) : super(key: key);
+  // final listPublications = [
+  //   {
+  //     'description': 'Luis Suarez',
+  //     'stateFigure': 'Bueno',
+  //     'nameUser': 'Anakaprielian',
+  //     'id': '1'
+  //   },
+  //   {
+  //     'description': 'Messi',
+  //     'stateFigure': 'Malo',
+  //     'nameUser': 'GuzCorrea',
+  //     'id': '2'
+  //   },
+  //   {
+  //     'description': 'Cavani',
+  //     'stateFigure': 'Regular',
+  //     'nameUser': 'AgusMarrero',
+  //     'id': '3'
+  //   },
+  // ];
   @override
   Widget build(BuildContext context) {
     final listPublications =
         context.select((OfertsGeneralBloc bloc) => bloc.state.listOferts);
-    return 
-    Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff891638),
-        shadowColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Publicaciones',
-          style: TextStyle(
-            fontFamily: 'Qatar2022',
-            color: Colors.white,
-            fontSize: 25,
-          ),
-        ),
-      ),
-      drawer: const _Drawer(),
-      body: BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
-        listener: (context, state) {},
-        listenWhen: (previous, current) {
-          return previous.listOferts != current.listOferts;
-        },
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemCount: listPublications.length,
-                itemBuilder: (context, index) {
-                  return _Ofert(
-                    description:
-                        listPublications[index]['description'].toString(),
-                    statePlayer:
-                        listPublications[index]['stateFigure'].toString(),
-                    nameUser: listPublications[index]['nameUser'].toString(),
-                    id: listPublications[index]['id'].toString(),
-                  );
-                },
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(8),
+    final status =
+        context.select((OfertsGeneralBloc bloc) => bloc.state.status);
+    return status == OfertsUserStatus.error
+        ? const Scaffold(
+            body: Center(
+              child: Text(
+                'No hay publicaciones activas en el momento',
+                style: TextStyle(
+                  fontFamily: 'Qatar2022',
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
               ),
-            )
-          ],
-        )),
-      ),
-    );
+            ),
+          )
+        : BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
+            listener: (context, state) {
+              Navigator.of(context).push(OfertSomeoneRoute.route());
+            },
+            listenWhen: (previous, current) {
+              return current.status == OfertsUserStatus.loaded;
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: const Color(0xff891638),
+                shadowColor: Colors.white,
+                elevation: 0,
+                title: const Text(
+                  'Publicaciones',
+                  style: TextStyle(
+                    fontFamily: 'Qatar2022',
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              drawer: const _Drawer(),
+              body: BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
+                listener: (context, state) {},
+                listenWhen: (previous, current) {
+                  return previous.listOferts != current.listOferts;
+                },
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        itemCount: listPublications.length,
+                        itemBuilder: (context, index) {
+                          return _Ofert(
+                            description: listPublications[index]['description']
+                                .toString(),
+                            statePlayer: listPublications[index]['stateFigure']
+                                .toString(),
+                            nameUser:
+                                listPublications[index]['nameUser'].toString(),
+                            id: listPublications[index]['id'].toString(),
+                          );
+                        },
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                      ),
+                    )
+                  ],
+                )),
+              ),
+            ),
+          );
   }
 }
 

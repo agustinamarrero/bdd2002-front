@@ -5,6 +5,7 @@ import 'package:bdd2022/login/model/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -80,17 +81,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         state.phone, state.password);
     try {
       Uri url = Uri.parse('http://localhost:8080/addUser');
-
+      final prefs = await SharedPreferences.getInstance();
       var body = newUser.toJson();
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(body));
-      //Si todo ok --> Mandar msj ok y redireccionarlo.
-      emit(
-        state.copyWith(
-          status: LoginStatus.loaded,
-        ),
-      );
+
+      final response2 = json.decode(response.body);
+      if (response2['accepted'] == true) {
+        prefs.setString('email', state.email);
+        emit(
+          state.copyWith(
+            status: LoginStatus.loaded,
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(

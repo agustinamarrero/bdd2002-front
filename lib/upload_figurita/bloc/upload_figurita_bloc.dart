@@ -6,6 +6,7 @@ import 'package:bdd2022/upload_figurita/upload_figurita.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'upload_figurita_event.dart';
 part 'upload_figurita_state.dart';
@@ -38,15 +39,22 @@ class UploadFiguritaBloc
 
   FutureOr<void> _onUploadFiguritaSubmited(
       UploadFiguritaSubmited event, Emitter<UploadFiguritaState> emit) async {
-    Figure figure = Figure(state.numberPlayer, state.stateFigure);
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    final figure = {
+      'email': email,
+      'figureNumber': state.numberPlayer,
+      'figureState': state.stateFigure.name,
+    };
     try {
-      Uri url = Uri.parse('http://localhost:8080/createFigure');
+      Uri url = Uri.parse('http://localhost:8080/addFigure');
 
-      var body = figure.toJson();
+      var body = figure;
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(body));
       //Si todo ok --> Mandar msj ok y redireccionarlo.
+      //HACER LO DEL ACCEPTED!
       emit(
         state.copyWith(
           status: UploadFiguritaStatus.loaded,

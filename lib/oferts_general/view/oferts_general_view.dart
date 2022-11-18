@@ -33,7 +33,8 @@ class OfertsGeneralView extends StatelessWidget {
   Widget build(BuildContext context) {
     final listPublications =
         context.select((OfertsGeneralBloc bloc) => bloc.state.listOferts);
-    return Scaffold(
+    return 
+    Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff891638),
         shadowColor: Colors.white,

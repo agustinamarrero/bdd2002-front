@@ -18,35 +18,26 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
   //Ejecutar para obtener toda la lista de ofertas
   FutureOr<void> _onOfertsGeneralGet(
       OfertsGeneralGet event, Emitter<OfertsGeneralState> emit) async {
-    Uri url = Uri.parse('http://localhost:8080/publications/agMail');
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    Uri url = Uri.parse('http://localhost:8080/publications/' + email!);
     final response = await http.get(url);
     final oferts = json.decode(response.body);
-    // final oferts = [
-    //   {
-    //     'description': 'Luis Suarez',
-    //     'stateFigure': 'Bueno',
-    //     'nameUser': 'Anakaprielian',
-    //     'id': '1'
-    //   },
-    //   {
-    //     'description': 'Messi',
-    //     'stateFigure': 'Malo',
-    //     'nameUser': 'GuzCorrea',
-    //     'id': '2'
-    //   },
-    //   {
-    //     'description': 'Cavani',
-    //     'stateFigure': 'Regular',
-    //     'nameUser': 'AgusMarrero',
-    //     'id': '3'
-    //   },
-    // ];
-    emit(
-      state.copyWith(
-        listOferts: oferts,
-        status: OfertsGeneralStatus.loaded,
-      ),
-    );
+    if (oferts == []) {
+      emit(
+        state.copyWith(
+          listOferts: oferts,
+          status: OfertsGeneralStatus.error,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          listOferts: oferts,
+          status: OfertsGeneralStatus.loaded,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _onOfertsGeneralSubmited(

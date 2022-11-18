@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
@@ -40,8 +41,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       'password': state.password,
     };
     try {
-      Uri url = Uri.parse('http://localhost:8080/users');
-      var response = await http.post(url,
+      Uri url = Uri.parse('http://localhost:8080/loginUser');
+      final response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(user));
       emit(
@@ -49,7 +50,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           status: SignInStatus.loaded,
         ),
       );
-      //Si todo ok --> Mandar msj ok y redireccionarlo.
+      final prefs = await SharedPreferences.getInstance();
+      final response2 = json.decode(response.body);
+      if (response2['accepted'] == true) {
+        prefs.setString('email', state.email);
+        emit(
+          state.copyWith(
+            status: SignInStatus.loaded,
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(

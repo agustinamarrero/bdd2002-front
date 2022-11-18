@@ -53,7 +53,11 @@ class UploadFiguritaView extends StatelessWidget {
           ),
           _InputText(
             hintText: 'Número',
-            onChanged: ((p0) {}),
+            onChanged: ((p0) {
+              context
+                  .read<UploadFiguritaBloc>()
+                  .add(UploadFiguritaNumberPlayer(p0));
+            }),
           ),
           const _Estado(),
           Padding(

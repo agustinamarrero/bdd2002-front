@@ -2,7 +2,7 @@ import 'package:bdd2022/upload_figurita/upload_figurita.dart';
 
 class Figure {
   final String numberPlayer;
-  final EstadoFigurita stateFigure;
+  final String stateFigure;
 
   Figure(
     this.numberPlayer,

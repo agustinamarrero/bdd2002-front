@@ -10,46 +10,53 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = context.select((LoginBloc bloc) => bloc.state.status);
-    return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(30),
-        child: TextButton(
-          onPressed: (() {
-            context.read<LoginBloc>().add(const LoginFormSubmited());
-            //si el estado el valido voy a navegar
-            Navigator.of(context).push(OfertsGeneralRoute.route());
-          }),
-          style: TextButton.styleFrom(
-              shape: const StadiumBorder(),
-              backgroundColor: const Color(0xff891638),
-              disabledForegroundColor: Colors.white.withOpacity(0.38),
-              minimumSize: const Size(300, 40)),
-          child: const Text(
-            'Registrarse',
-            style: TextStyle(
-              fontFamily: 'Qatar2022',
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
-      body: Column(
-        children: const [
-          SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Ingrese sus datos',
-                style: TextStyle(fontFamily: 'Qatar2022', fontSize: 25),
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        Navigator.of(context).push(OfertsGeneralRoute.route());
+      },
+      listenWhen: (previous, current) {
+        return current.status == LoginStatus.loaded;
+      },
+      child: Scaffold(
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(30),
+          child: TextButton(
+            onPressed: (() {
+              context.read<LoginBloc>().add(const LoginFormSubmited());
+              //si el estado el valido voy a navegar
+            }),
+            style: TextButton.styleFrom(
+                shape: const StadiumBorder(),
+                backgroundColor: const Color(0xff891638),
+                disabledForegroundColor: Colors.white.withOpacity(0.38),
+                minimumSize: const Size(300, 40)),
+            child: const Text(
+              'Registrarse',
+              style: TextStyle(
+                fontFamily: 'Qatar2022',
+                color: Colors.white,
               ),
             ),
           ),
-          Center(
-            child: SingleChildScrollView(
-              child: _Form(),
+        ),
+        body: Column(
+          children: const [
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Ingrese sus datos',
+                  style: TextStyle(fontFamily: 'Qatar2022', fontSize: 25),
+                ),
+              ),
             ),
-          ),
-        ],
+            Center(
+              child: SingleChildScrollView(
+                child: _Form(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -119,9 +126,6 @@ class _InputText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: TextField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9#+-. ]*')),
-        ],
         keyboardType: TextInputType.text,
         onChanged: onChanged,
         decoration: InputDecoration(

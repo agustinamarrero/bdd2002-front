@@ -20,7 +20,7 @@ class UploadFiguritaState extends Equatable {
           status: UploadFiguritaStatus.initial,
           numberPlayer: '',
           stateFigure: EstadoFigurita.bueno,
-          figure: Figure('', EstadoFigurita.bueno),
+          figure: Figure('', ''),
         );
 
   final UploadFiguritaStatus status;

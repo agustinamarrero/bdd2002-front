@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:bdd2022/active_oferts/active_oferts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,48 +60,59 @@ class ActiveOfertsView extends StatelessWidget {
               child: Text('No hay ofertas'),
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              backgroundColor: const Color(0xff891638),
-              title: const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'Ofertas',
-                  style: TextStyle(
-                    fontFamily: 'Qatar2022',
-                    fontSize: 25,
+        : (status == ActiveOfertsStatus.loaded)
+            ? AlertDialog(
+                title: const Text('Acción satisfactoria'),
+                actions: <Widget>[
+                    TextButton(
+                      child: const Text('Approve'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ])
+            : Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ),
-              ),
-            ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
+                  backgroundColor: const Color(0xff891638),
+                  title: const Padding(
+                    padding: EdgeInsets.all(20.0),
                     child: Text(
-                      'Aqui puede observar las ofertas que usted realizo ',
-                      textAlign: TextAlign.center,
+                      'Ofertas',
                       style: TextStyle(
                         fontFamily: 'Qatar2022',
-                        fontSize: 17,
+                        fontSize: 25,
                       ),
                     ),
                   ),
-                  _Card(
-                    listOffer: listPublications,
-                  ),
-                ],
-              )),
-            ),
-          );
+                ),
+                body: SafeArea(
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Aqui puede observar las ofertas que usted realizo ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Qatar2022',
+                            fontSize: 17,
+                          ),
+                        ),
+                      ),
+                      _Card(
+                        listOffer: listPublications,
+                      ),
+                    ],
+                  )),
+                ),
+              );
   }
 }
 

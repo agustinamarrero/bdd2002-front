@@ -10,118 +10,110 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertsGeneralView extends StatelessWidget {
   const OfertsGeneralView({Key? key}) : super(key: key);
-  // final listPublications = [
-  //   {
-  //     'description': 'Luis Suarez',
-  //     'stateFigure': 'Bueno',
-  //     'nameUser': 'Anakaprielian',
-  //     'id': '1'
-  //   },
-  //   {
-  //     'description': 'Messi',
-  //     'stateFigure': 'Malo',
-  //     'nameUser': 'GuzCorrea',
-  //     'id': '2'
-  //   },
-  //   {
-  //     'description': 'Cavani',
-  //     'stateFigure': 'Regular',
-  //     'nameUser': 'AgusMarrero',
-  //     'id': '3'
-  //   },
-  // ];
+
   @override
   Widget build(BuildContext context) {
-    final listPublications =
+    final listOferts =
         context.select((OfertsGeneralBloc bloc) => bloc.state.listOferts);
     final status =
         context.select((OfertsGeneralBloc bloc) => bloc.state.status);
-    return status == OfertsGeneralStatus.error
-        ? Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color(0xff891638),
-              shadowColor: Colors.white,
-              elevation: 0,
-              title: const Text(
-                'Publicaciones',
-                style: TextStyle(
-                  fontFamily: 'Qatar2022',
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-            drawer: const _Drawer(),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Center(
-                  child: Text(
-                    'No hay publicaciones activas en el momento',
+    return status == OfertsGeneralStatus.loaded
+        ? AlertDialog(
+            title: const Text('Acción satisfactoria'),
+            actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ])
+        : status == OfertsGeneralStatus.error
+            ? Scaffold(
+                appBar: AppBar(
+                  backgroundColor: const Color(0xff891638),
+                  shadowColor: Colors.white,
+                  elevation: 0,
+                  title: const Text(
+                    'Publicaciones',
                     style: TextStyle(
                       fontFamily: 'Qatar2022',
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 25,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
-              ],
-            ),
-          )
-        : BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
-            listener: (context, state) {
-              Navigator.of(context).push(OfertSomeoneRoute.route());
-            },
-            listenWhen: (previous, current) {
-              return current.status == OfertsUserStatus.loaded;
-            },
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: const Color(0xff891638),
-                shadowColor: Colors.white,
-                elevation: 0,
-                title: const Text(
-                  'Publicaciones',
-                  style: TextStyle(
-                    fontFamily: 'Qatar2022',
-                    color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              drawer: const _Drawer(),
-              body: BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
-                listener: (context, state) {},
-                listenWhen: (previous, current) {
-                  return previous.listOferts != current.listOferts;
-                },
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        itemCount: listPublications.length,
-                        itemBuilder: (context, index) {
-                          return _Ofert(
-                            description: listPublications[index]['description']
-                                .toString(),
-                            statePlayer: listPublications[index]['state_damage']
-                                .toString(),
-                            id: listPublications[index]['publication_id']
-                                .toString(),
-                          );
-                        },
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(8),
+                drawer: const _Drawer(),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Center(
+                      child: Text(
+                        'No hay publicaciones activas en el momento',
+                        style: TextStyle(
+                          fontFamily: 'Qatar2022',
+                          color: Colors.black,
+                          fontSize: 25,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    )
+                    ),
                   ],
-                )),
-              ),
-            ),
-          );
+                ),
+              )
+            : BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
+                listener: (context, state) {
+                  Navigator.of(context).push(OfertSomeoneRoute.route());
+                },
+                listenWhen: (previous, current) {
+                  return current.status == OfertsUserStatus.loaded;
+                },
+                child: Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: const Color(0xff891638),
+                    shadowColor: Colors.white,
+                    elevation: 0,
+                    title: const Text(
+                      'Publicaciones',
+                      style: TextStyle(
+                        fontFamily: 'Qatar2022',
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  drawer: const _Drawer(),
+                  body: BlocListener<OfertsGeneralBloc, OfertsGeneralState>(
+                    listener: (context, state) {},
+                    listenWhen: (previous, current) {
+                      return previous.listOferts != current.listOferts;
+                    },
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            itemCount: listOferts.length,
+                            itemBuilder: (context, index) {
+                              return _Ofert(
+                                description:
+                                    listOferts[index]['description'].toString(),
+                                statePlayer: listOferts[index]['state_damage']
+                                    .toString(),
+                                id: listOferts[index]['publication_id']
+                                    .toString(),
+                              );
+                            },
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(8),
+                          ),
+                        )
+                      ],
+                    )),
+                  ),
+                ),
+              );
   }
 }
 

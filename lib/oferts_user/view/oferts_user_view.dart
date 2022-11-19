@@ -10,56 +10,67 @@ class OfertsUserView extends StatelessWidget {
     final listPublications =
         context.select((OfertsUserBloc bloc) => bloc.state.listOferts);
     final status = context.select((OfertsUserBloc bloc) => bloc.state.status);
-    return status == OfertsUserStatus.error
-        ? const Scaffold(
-            body: Center(
-              child: Text(
-                'No hay publicaciones activas en el momento',
-                style: TextStyle(
-                  fontFamily: 'Qatar2022',
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-          )
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color(0xff891638),
-              shadowColor: Colors.white,
-              elevation: 0,
-              title: const Text(
-                'Ofertas',
-                style: TextStyle(
-                  fontFamily: 'Qatar2022',
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-            body: SingleChildScrollView(
-                child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
+    return status == OfertsUserStatus.loaded
+        ? AlertDialog(
+            title: const Text('Acción satisfactoria'),
+            actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ])
+        : status == OfertsUserStatus.error
+            ? const Scaffold(
+                body: Center(
                   child: Text(
-                    'Aqui puede observar las ofertas que hicieron sobre sus figuritas',
-                    textAlign: TextAlign.center,
+                    'No hay publicaciones activas en el momento',
                     style: TextStyle(
                       fontFamily: 'Qatar2022',
-                      fontSize: 17,
+                      color: Colors.white,
+                      fontSize: 25,
                     ),
                   ),
                 ),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: _Card(
-                    listPublications: listPublications,
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  backgroundColor: const Color(0xff891638),
+                  shadowColor: Colors.white,
+                  elevation: 0,
+                  title: const Text(
+                    'Ofertas',
+                    style: TextStyle(
+                      fontFamily: 'Qatar2022',
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-              ],
-            )),
-          );
+                body: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Aqui puede observar las ofertas que hicieron sobre sus figuritas',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Qatar2022',
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: _Card(
+                        listPublications: listPublications,
+                      ),
+                    ),
+                  ],
+                )),
+              );
   }
 }
 

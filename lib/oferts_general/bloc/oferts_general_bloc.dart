@@ -45,7 +45,6 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('description', event.description);
       await prefs.setString('stateFigure', event.stateFigure);
-
       await prefs.setString('id', event.id);
       emit(
         state.copyWith(

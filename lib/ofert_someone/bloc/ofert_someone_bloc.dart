@@ -40,7 +40,7 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final email = prefs.getString('email');
-      Uri url = Uri.parse('http://localhost:8080/userFigures/' + email!);
+      Uri url = Uri.parse('http://localhost:8080/userFigures/${email!}');
       final response = await http.get(url);
       final figures = json.decode(response.body);
       if (figures['userfigures'].toString() == '[]') {
@@ -82,22 +82,6 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
         'email_bidder': email,
         'state_offer': 'Activo',
         'figures': event.listOffer,
-      };
-      //   private String number;
-      // private String damage_state;
-      // private Integer quantity;
-
-      // OFFER
-      // private String id_publication;
-      // private String email_bidder;
-      // private String state_offer;
-      // private List<FigureOfferDTO> figures;
-
-      final createPublication = {
-        'stateFigure': stateFigure,
-        'description': description,
-        'id': id,
-        'nameUser': nameUser,
       };
 
       var response = await http.post(url,

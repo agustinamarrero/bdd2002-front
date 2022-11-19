@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertSomeoneView extends StatelessWidget {
-  OfertSomeoneView({Key? key}) : super(key: key);
+  const OfertSomeoneView({Key? key}) : super(key: key);
   // final listFigures = [
   //   {
   //     'name': 'Luis Suarez',
@@ -25,7 +25,7 @@ class OfertSomeoneView extends StatelessWidget {
         context.select((OfertSomeoneBloc bloc) => bloc.state.listFigures);
     return BlocListener<OfertSomeoneBloc, OfertSomeoneState>(
       listener: (context, state) {
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       },
       listenWhen: (previous, current) {
         return current.status == OfertsGeneralStatus.loaded;
@@ -87,9 +87,6 @@ class OfertSomeoneView extends StatelessWidget {
               padding: const EdgeInsets.all(30),
               child: TextButton(
                 onPressed: (() {
-                  context
-                      .read<OfertSomeoneBloc>()
-                      .add(OfertSomeoneCreate(listOffer: listFigures));
                   //Navigator.of(context).push(OfertsGeneralRoute.route());
                 }),
                 style: TextButton.styleFrom(

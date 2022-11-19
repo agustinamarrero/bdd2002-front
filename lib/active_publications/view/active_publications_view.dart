@@ -1,4 +1,3 @@
-import 'package:bdd2022/active_oferts/active_oferts.dart';
 import 'package:bdd2022/active_publications/bloc/active_publications_bloc.dart';
 import 'package:bdd2022/models/publication.dart';
 import 'package:bdd2022/oferts_user/view/view.dart';
@@ -14,64 +13,81 @@ class ActivePublicationsView extends StatelessWidget {
         context.select((ActivePublicationsBloc bloc) => bloc.state.status);
     final listPublications = context
         .select((ActivePublicationsBloc bloc) => bloc.state.listPublications);
-    // final listPublications = [
-    //   {
-    //     'namePlayer': 'Luis Suarez',
-    //     'stateOfert': 'Activa',
-    //     'idOferts': '23',
-    //   },
-    //   {
-    //     'namePlayer': 'Messi',
-    //     'stateOfert': 'Desactivada',
-    //     'idOferts': null,
-    //   },
-    //   {
-    //     'namePlayer': 'Cavani',
-    //     'stateOfert': 'Desactivada',
-    //     'idOferts': null,
-    //   },
-    // ];
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        backgroundColor: const Color(0xff891638),
-        title: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            'Mis Publicaciones',
-            style: TextStyle(
-              fontFamily: 'Qatar2022',
-              fontSize: 25,
+
+    return status == ActivePublicationsStatus.error
+        ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xff891638),
+              shadowColor: Colors.white,
+              elevation: 0,
+              title: const Text(
+                'Mis Publicaciones',
+                style: TextStyle(
+                  fontFamily: 'Qatar2022',
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-              itemCount: listPublications.length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (context, index) {
-                return _Publication(
-                  namePlayer: listPublications[index]['description'].toString(),
-                  stateOfert: listPublications[index]['activated'].toString(),
-                  idOfert: listPublications[index]['publication_id'].toString(),
-                );
-              },
+            body: const Center(
+              child: Text('No hay publicaciones'),
             ),
           )
-        ],
-      )),
-    );
+        : status == ActivePublicationsStatus.loaded
+            ? AlertDialog(
+                title: const Text('Acción satisfactoria'),
+                actions: <Widget>[
+                    TextButton(
+                      child: const Text('Approve'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ])
+            : Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  backgroundColor: const Color(0xff891638),
+                  title: const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
+                      'Mis Publicaciones',
+                      style: TextStyle(
+                        fontFamily: 'Qatar2022',
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ),
+                body: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.builder(
+                        itemCount: listPublications.length,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                        itemBuilder: (context, index) {
+                          return _Publication(
+                            namePlayer: listPublications[index]['description']
+                                .toString(),
+                            stateOfert:
+                                listPublications[index]['activated'].toString(),
+                            idOfert: listPublications[index]['publication_id']
+                                .toString(),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                )),
+              );
   }
 }
 

@@ -10,89 +10,103 @@ class UploadFiguritaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final status =
+        context.select((UploadFiguritaBloc bloc) => bloc.state.status);
     return BlocListener<UploadFiguritaBloc, UploadFiguritaState>(
       listener: (context, state) {
-        Navigator.of(context).pop();
+        //Navigator.of(context).pop();
       },
       listenWhen: (previous, current) {
         return current.status == UploadFiguritaStatus.loaded;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          backgroundColor: const Color(0xff891638),
-          title: const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text(
-              'Subir Figurita',
-              style: TextStyle(
-                fontFamily: 'Qatar2022',
-                fontSize: 25,
-              ),
-            ),
-          ),
-        ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                'Ingrese los datos para subir una nueva figurita',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Qatar2022',
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 28.0),
-              child: Text(
-                'Número de figurita',
-                style: TextStyle(fontFamily: 'Qatar2022', fontSize: 15),
-              ),
-            ),
-            _InputText(
-              hintText: 'Número',
-              onChanged: ((p0) {
-                context
-                    .read<UploadFiguritaBloc>()
-                    .add(UploadFiguritaNumberPlayer(p0));
-              }),
-            ),
-            const _Estado(),
-            Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: TextButton(
-                  onPressed: (() {
-                    context
-                        .read<UploadFiguritaBloc>()
-                        .add(const UploadFiguritaSubmited());
-                    //Si todo ok navegar
+      child: status == UploadFiguritaStatus.loaded
+          ? AlertDialog(
+              title: const Text('Acción satisfactoria'),
+              actions: <Widget>[
+                  TextButton(
+                    child: const Text('Approve'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ])
+          : Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
                     Navigator.of(context).pop();
-                  }),
-                  style: TextButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      backgroundColor: const Color(0xff891638),
-                      disabledForegroundColor: Colors.white.withOpacity(0.38),
-                      minimumSize: const Size(300, 40)),
-                  child: const Text(
-                    'Crear',
+                  },
+                ),
+                backgroundColor: const Color(0xff891638),
+                title: const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    'Subir Figurita',
                     style: TextStyle(
                       fontFamily: 'Qatar2022',
-                      color: Colors.white,
+                      fontSize: 25,
                     ),
                   ),
-                )),
-          ],
-        )),
-      ),
+                ),
+              ),
+              body: SingleChildScrollView(
+                  child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'Ingrese los datos para subir una nueva figurita',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Qatar2022',
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 28.0),
+                    child: Text(
+                      'Número de figurita',
+                      style: TextStyle(fontFamily: 'Qatar2022', fontSize: 15),
+                    ),
+                  ),
+                  _InputText(
+                    hintText: 'Número',
+                    onChanged: ((p0) {
+                      context
+                          .read<UploadFiguritaBloc>()
+                          .add(UploadFiguritaNumberPlayer(p0));
+                    }),
+                  ),
+                  const _Estado(),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: TextButton(
+                        onPressed: (() {
+                          context
+                              .read<UploadFiguritaBloc>()
+                              .add(const UploadFiguritaSubmited());
+                          //Si todo ok navegar
+                          Navigator.of(context).pop();
+                        }),
+                        style: TextButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            backgroundColor: const Color(0xff891638),
+                            disabledForegroundColor:
+                                Colors.white.withOpacity(0.38),
+                            minimumSize: const Size(300, 40)),
+                        child: const Text(
+                          'Crear',
+                          style: TextStyle(
+                            fontFamily: 'Qatar2022',
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                ],
+              )),
+            ),
     );
   }
 }

@@ -1,94 +1,124 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
 
-final json = [
-  {
-    'namePlayer': 'Luis Suarez',
-    'figures': [
-      {
-        'namePlayer': 'Messi',
-      },
-      {
-        'namePlayer': 'Canvani',
-      },
-      {
-        'namePlayer': 'Pepe',
-      }
-    ],
-    'stateOfert': 'No aceptada',
-  },
-  {
-    'namePlayer': 'Messi',
-    'figures': [
-      {
-        'namePlayer': 'Juan',
-      },
-      {
-        'namePlayer': 'Luis',
-      },
-    ],
-    'stateOfert': 'Aceptada',
-  },
-];
+import 'package:bdd2022/active_oferts/active_oferts.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// final listPublications = [
+//   {
+//     'namePlayer': 'Luis Suarez',
+//     'figures': [
+//       {
+//         'namePlayer': 'Messi',
+//       },
+//       {
+//         'namePlayer': 'Canvani',
+//       },
+//       {
+//         'namePlayer': 'Pepe',
+//       }
+//     ],
+//     'stateOfert': 'No aceptada',
+//   },
+//   {
+//     'namePlayer': 'Messi',
+//     'figures': [
+//       {
+//         'namePlayer': 'Juan',
+//       },
+//       {
+//         'namePlayer': 'Luis',
+//       },
+//     ],
+//     'stateOfert': 'Aceptada',
+//   },
+// ];
 
 class ActiveOfertsView extends StatelessWidget {
   const ActiveOfertsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        backgroundColor: const Color(0xff891638),
-        title: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            'Ofertas',
-            style: TextStyle(
-              fontFamily: 'Qatar2022',
-              fontSize: 25,
-            ),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Aqui puede observar las ofertas que usted realizo ',
-                textAlign: TextAlign.center,
+    final listPublications =
+        context.select((ActiveOfertsBloc bloc) => bloc.state.listOffer);
+    print(listPublications);
+    final status = context.select((ActiveOfertsBloc bloc) => bloc.state.status);
+    return status == ActiveOfertsStatus.error
+        ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: const Color(0xff891638),
+              shadowColor: Colors.white,
+              elevation: 0,
+              title: const Text(
+                'Ofertas',
                 style: TextStyle(
                   fontFamily: 'Qatar2022',
-                  fontSize: 17,
+                  color: Colors.white,
+                  fontSize: 25,
                 ),
               ),
             ),
-            _Card(),
-          ],
-        )),
-      ),
-    );
+            body: const Center(
+              child: Text('No hay ofertas'),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              backgroundColor: const Color(0xff891638),
+              title: const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  'Ofertas',
+                  style: TextStyle(
+                    fontFamily: 'Qatar2022',
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                  child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Aqui puede observar las ofertas que usted realizo ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Qatar2022',
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  _Card(
+                    listOffer: listPublications,
+                  ),
+                ],
+              )),
+            ),
+          );
   }
 }
 
 class _Card extends StatelessWidget {
   const _Card({
     Key? key,
+    required this.listOffer,
   }) : super(key: key);
-
+  final List<dynamic> listOffer;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: json.length,
+        itemCount: listOffer.length,
         itemBuilder: ((context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -107,7 +137,7 @@ class _Card extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      json[index]['namePlayer'].toString(),
+                      listOffer[index]['description_bidder'].toString(),
                       style: const TextStyle(
                         fontFamily: 'Qatar2022',
                         fontSize: 15,
@@ -115,8 +145,9 @@ class _Card extends StatelessWidget {
                     ),
                   ),
                   _Ofers(
-                    figuresOferts: json[index]['figures'] as List,
-                    stateOfert: json[index]['stateOfert'].toString(),
+                    figuresOferts:
+                        listOffer[index]['description_publisher'] as List,
+                    stateOfert: listOffer[index]['state_offer'].toString(),
                   ),
                 ],
               ),

@@ -5,22 +5,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertSomeoneView extends StatelessWidget {
   OfertSomeoneView({Key? key}) : super(key: key);
-  final listFigures = [
-    {
-      'name': 'Luis Suarez',
-      'id': '123',
-    },
-    {
-      'name': 'Cavani',
-      'id': '2223',
-    },
-    {
-      'name': 'Messi',
-      'id': '1343',
-    }
-  ];
+  // final listFigures = [
+  //   {
+  //     'name': 'Luis Suarez',
+  //     'id': '123',
+  //   },
+  //   {
+  //     'name': 'Cavani',
+  //     'id': '2223',
+  //   },
+  //   {
+  //     'name': 'Messi',
+  //     'id': '1343',
+  //   }
+  // ];
   @override
   Widget build(BuildContext context) {
+    final listFigures =
+        context.select((OfertSomeoneBloc bloc) => bloc.state.listFigures);
     return BlocListener<OfertSomeoneBloc, OfertSomeoneState>(
       listener: (context, state) {
         Navigator.of(context).pop();
@@ -76,7 +78,7 @@ class OfertSomeoneView extends StatelessWidget {
                     ),
                   ),
                   title: Text(
-                    listFigures[index]['name'].toString(),
+                    listFigures[index]['description'].toString(),
                   ),
                 );
               }),
@@ -85,6 +87,9 @@ class OfertSomeoneView extends StatelessWidget {
               padding: const EdgeInsets.all(30),
               child: TextButton(
                 onPressed: (() {
+                  context
+                      .read<OfertSomeoneBloc>()
+                      .add(OfertSomeoneCreate(listOffer: listFigures));
                   //Navigator.of(context).push(OfertsGeneralRoute.route());
                 }),
                 style: TextButton.styleFrom(

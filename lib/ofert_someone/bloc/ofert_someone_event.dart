@@ -19,7 +19,13 @@ class OfertSomeoneGetFigures extends OfertSomeoneEvent {
 }
 
 class OfertSomeoneCreate extends OfertSomeoneEvent {
-  const OfertSomeoneCreate();
+  const OfertSomeoneCreate({
+    required this.listOffer,
+  });
+
+  final List<dynamic> listOffer;
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        listOffer,
+      ];
 }

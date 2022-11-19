@@ -10,7 +10,7 @@ class ActiveOfertsRoute extends StatelessWidget {
       builder: (ctx) {
         return BlocProvider(
           lazy: false,
-          create: (_) => ActiveOfertsBloc(),
+          create: (_) => ActiveOfertsBloc()..add(ActiveOfertsGet()),
           child: ActiveOfertsView(),
         );
       },

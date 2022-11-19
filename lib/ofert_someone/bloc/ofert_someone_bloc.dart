@@ -40,20 +40,20 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final email = prefs.getString('email');
-      Uri url = Uri.parse('http://localhost:8080/getFigures/${email!}');
+      Uri url = Uri.parse('http://localhost:8080/userFigures/' + email!);
       final response = await http.get(url);
       final figures = json.decode(response.body);
-      if (figures == []) {
+      if (figures['userfigures'].toString() == '[]') {
         emit(
           state.copyWith(
-            listFigures: figures,
+            listFigures: figures['userfigures'],
             status: OfertSomeoneStatus.error,
           ),
         );
       } else {
         emit(
           state.copyWith(
-            listFigures: figures,
+            listFigures: figures['userfigures'],
           ),
         );
       }
@@ -71,11 +71,27 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final email = prefs.getString('email');
-      Uri url = Uri.parse('http://localhost:8080/createOffer/${email!}');
+      Uri url = Uri.parse('http://localhost:8080/addOffer');
       final stateFigure = prefs.getString('stateFigure');
       final description = prefs.getString('description');
       final id = prefs.getString('id');
       final nameUser = prefs.getString('nameUser');
+
+      final createOffer = {
+        'id_publication': id,
+        'email_bidder': email,
+        'state_offer': 'Activo',
+        'figures': event.listOffer,
+      };
+      //   private String number;
+      // private String damage_state;
+      // private Integer quantity;
+
+      // OFFER
+      // private String id_publication;
+      // private String email_bidder;
+      // private String state_offer;
+      // private List<FigureOfferDTO> figures;
 
       final createPublication = {
         'stateFigure': stateFigure,
@@ -86,7 +102,7 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
 
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
-          body: json.encode(createPublication));
+          body: json.encode(createOffer));
       final response2 = json.decode(response.body);
       if (response2['accepted'] == true) {
         emit(

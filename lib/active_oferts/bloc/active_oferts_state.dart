@@ -8,27 +8,28 @@ enum ActiveOfertsStatus {
 }
 
 class ActiveOfertsState extends Equatable {
-  const ActiveOfertsState({
+  ActiveOfertsState({
     required this.status,
+    required this.listOffer,
   });
 
-  const ActiveOfertsState.initial()
-      : this(        
-          status: ActiveOfertsStatus.initial,
-        );
+  ActiveOfertsState.initial()
+      : this(status: ActiveOfertsStatus.initial, listOffer: [{}]);
 
   final ActiveOfertsStatus status;
+  final List<dynamic> listOffer;
 
-  ActiveOfertsState copyWith({
-    ActiveOfertsStatus? status,
-  }) {
+  ActiveOfertsState copyWith(
+      {ActiveOfertsStatus? status, List<dynamic>? listOffer}) {
     return ActiveOfertsState(
       status: status ?? this.status,
+      listOffer: listOffer ?? this.listOffer,
     );
   }
 
   @override
   List<Object> get props => [
         status,
+        listOffer,
       ];
 }

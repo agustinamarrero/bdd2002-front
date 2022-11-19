@@ -18,17 +18,17 @@ class OfertSomeoneState extends Equatable {
       : this(
           status: OfertSomeoneStatus.initial,
           idPublication: '',
-          listFigures: [],
+          listFigures: [{}],
         );
 
   final OfertSomeoneStatus status;
   final String idPublication;
-  List<Map<String, String>> listFigures;
+  List<dynamic> listFigures;
 
   OfertSomeoneState copyWith({
     OfertSomeoneStatus? status,
     String? idPublication,
-    List<Map<String, String>>? listFigures,
+    List<dynamic>? listFigures,
   }) {
     return OfertSomeoneState(
       status: status ?? this.status,

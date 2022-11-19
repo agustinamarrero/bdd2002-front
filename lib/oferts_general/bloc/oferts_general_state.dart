@@ -8,7 +8,7 @@ enum OfertsGeneralStatus {
 }
 
 class OfertsGeneralState extends Equatable {
-  OfertsGeneralState({
+  const OfertsGeneralState({
     required this.status,
     required this.listOferts,
   });

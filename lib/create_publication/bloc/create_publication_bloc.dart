@@ -34,15 +34,6 @@ class CreatePublicationBloc
           headers: {"Content-Type": "application/json"},
           body: json.encode(createPublication));
       final response2 = json.decode(response.body);
-      // if (response2['accepted'] == true) {
-
-      // } else {
-      //   emit(
-      //     state.copyWith(
-      //       status: CreatePublicationStatus.error,
-      //     ),
-      //   );
-      // }
       emit(
         state.copyWith(
           status: CreatePublicationStatus.loaded,
@@ -79,7 +70,6 @@ class CreatePublicationBloc
       emit(
         state.copyWith(
           listFigures: figures['userfigures'],
-          status: CreatePublicationStatus.loaded,
         ),
       );
     }

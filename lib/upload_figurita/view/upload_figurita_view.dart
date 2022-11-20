@@ -124,6 +124,8 @@ class _EstadoState extends State<_Estado> {
   final EstadoFigurita _character = EstadoFigurita.Bueno;
   @override
   Widget build(BuildContext context) {
+    final estadoFigure =
+        context.select((UploadFiguritaBloc bloc) => bloc.state.stateFigure);
     return Column(
       children: [
         const Padding(
@@ -143,7 +145,7 @@ class _EstadoState extends State<_Estado> {
               const Color(0xff891638),
             ),
             value: EstadoFigurita.Bueno,
-            groupValue: _character,
+            groupValue: estadoFigure,
             onChanged: (EstadoFigurita? value) {
               context
                   .read<UploadFiguritaBloc>()
@@ -161,7 +163,7 @@ class _EstadoState extends State<_Estado> {
               const Color(0xff891638),
             ),
             value: EstadoFigurita.Malo,
-            groupValue: _character,
+            groupValue: estadoFigure,
             onChanged: (EstadoFigurita? value) {
               context
                   .read<UploadFiguritaBloc>()
@@ -179,7 +181,7 @@ class _EstadoState extends State<_Estado> {
               const Color(0xff891638),
             ),
             value: EstadoFigurita.Regular,
-            groupValue: _character,
+            groupValue: estadoFigure,
             onChanged: (EstadoFigurita? value) {
               context
                   .read<UploadFiguritaBloc>()

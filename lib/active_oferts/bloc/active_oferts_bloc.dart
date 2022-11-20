@@ -21,7 +21,7 @@ class ActiveOfertsBloc extends Bloc<ActiveOfertsEvent, ActiveOfertsState> {
     final response = await http.get(url);
     final publications = json.decode(response.body);
 
-    if (publications.toString() == '[]') {
+    if (publications['listOffers'].toString() == '[]') {
       emit(
         state.copyWith(
           status: ActiveOfertsStatus.error,
@@ -30,8 +30,7 @@ class ActiveOfertsBloc extends Bloc<ActiveOfertsEvent, ActiveOfertsState> {
     } else {
       emit(
         state.copyWith(
-          listOffer: publications,
-          status: ActiveOfertsStatus.loaded,
+          listOffer: publications['listOffers'],
         ),
       );
     }

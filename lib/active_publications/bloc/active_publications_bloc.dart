@@ -34,11 +34,9 @@ class ActivePublicationsBloc
         ),
       );
     } else {
-     
       emit(
         state.copyWith(
           listPublications: publications['publications'],
-          status: ActivePublicationsStatus.loaded,
         ),
       );
     }
@@ -67,7 +65,7 @@ class ActivePublicationsBloc
       );
     } catch (e) {
       emit(
-        state.copyWith( 
+        state.copyWith(
           status: ActivePublicationsStatus.error,
         ),
       );

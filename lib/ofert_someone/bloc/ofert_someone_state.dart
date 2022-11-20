@@ -12,6 +12,7 @@ class OfertSomeoneState extends Equatable {
     required this.status,
     required this.idPublication,
     required this.listFigures,
+    required this.listFiguresAdd,
   });
 
   OfertSomeoneState.initial()
@@ -19,21 +20,25 @@ class OfertSomeoneState extends Equatable {
           status: OfertSomeoneStatus.initial,
           idPublication: '',
           listFigures: [{}],
+          listFiguresAdd: [],
         );
 
   final OfertSomeoneStatus status;
   final String idPublication;
   List<dynamic> listFigures;
+  List<dynamic> listFiguresAdd;
 
   OfertSomeoneState copyWith({
     OfertSomeoneStatus? status,
     String? idPublication,
     List<dynamic>? listFigures,
+    List<dynamic>? listFiguresAdd,
   }) {
     return OfertSomeoneState(
       status: status ?? this.status,
       idPublication: idPublication ?? this.idPublication,
       listFigures: listFigures ?? this.listFigures,
+      listFiguresAdd: listFiguresAdd ?? this.listFiguresAdd,
     );
   }
 
@@ -42,5 +47,6 @@ class OfertSomeoneState extends Equatable {
         status,
         idPublication,
         listFigures,
+        listFiguresAdd,
       ];
 }

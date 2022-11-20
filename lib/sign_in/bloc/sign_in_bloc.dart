@@ -52,20 +52,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       );
       final prefs = await SharedPreferences.getInstance();
       final response2 = json.decode(response.body);
-      if (response2['accepted'] == true) {
-        prefs.setString('email', state.email);
-        emit(
-          state.copyWith(
-            status: SignInStatus.loaded,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            status: SignInStatus.error,
-          ),
-        );
-      }
+
+      prefs.setString('email', state.email);
+      emit(
+        state.copyWith(
+          status: SignInStatus.loaded,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

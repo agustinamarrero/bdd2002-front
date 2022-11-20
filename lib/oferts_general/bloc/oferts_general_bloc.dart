@@ -33,7 +33,7 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
       emit(
         state.copyWith(
           listOferts: publications['publications'],
-          status: OfertsGeneralStatus.loaded,
+          status: OfertsGeneralStatus.initial,
         ),
       );
     }
@@ -46,11 +46,6 @@ class OfertsGeneralBloc extends Bloc<OfertsGeneralEvent, OfertsGeneralState> {
       await prefs.setString('description', event.description);
       await prefs.setString('stateFigure', event.stateFigure);
       await prefs.setString('id', event.id);
-      emit(
-        state.copyWith(
-          status: OfertsGeneralStatus.loaded,
-        ),
-      );
     } catch (e) {
       emit(
         state.copyWith(

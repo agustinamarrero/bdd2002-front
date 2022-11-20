@@ -88,7 +88,7 @@ class _InputText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: TextField(
-        keyboardType: TextInputType.text,
+        autofocus: true,
         onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(18),

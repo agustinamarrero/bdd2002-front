@@ -14,6 +14,7 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
     on<OfertSomeoneSetId>(_onOfertSomeoneSetId);
     on<OfertSomeoneGetFigures>(_onOfertSomeoneGetFigures);
     on<OfertSomeoneCreate>(_onOfertSomeoneCreate);
+    on<OfertSomeoneChanged>(_onOfertSomeoneChanged);
   }
 
   FutureOr<void> _onOfertSomeoneSetId(
@@ -72,35 +73,26 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
       final prefs = await SharedPreferences.getInstance();
       final email = prefs.getString('email');
       Uri url = Uri.parse('http://localhost:8080/addOffer');
-      final stateFigure = prefs.getString('stateFigure');
-      final description = prefs.getString('description');
-      final id = prefs.getString('id');
-      final nameUser = prefs.getString('nameUser');
 
+      final id = prefs.getString('id');
+      state.listFiguresAdd.remove('head');
       final createOffer = {
         'id_publication': id,
         'email_bidder': email,
         'state_offer': 'Activo',
-        'figures': event.listOffer,
+        'figures': state.listFiguresAdd,
       };
 
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(createOffer));
       final response2 = json.decode(response.body);
-      if (response2['accepted'] == true) {
-        emit(
-          state.copyWith(
-            status: OfertSomeoneStatus.loaded,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            status: OfertSomeoneStatus.error,
-          ),
-        );
-      }
+
+      emit(
+        state.copyWith(
+          status: OfertSomeoneStatus.loaded,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -108,5 +100,15 @@ class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
         ),
       );
     }
+  }
+
+  FutureOr<void> _onOfertSomeoneChanged(
+      OfertSomeoneChanged event, Emitter<OfertSomeoneState> emit) {
+    final aux = state.listFiguresAdd;
+    aux.add(event.list);
+
+    emit(
+      state.copyWith(listFiguresAdd: aux),
+    );
   }
 }

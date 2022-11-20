@@ -106,9 +106,11 @@ class ActiveOfertsView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      _Card(
-                        listOffer: listPublications,
-                      ),
+                      listPublications.isNotEmpty
+                          ? _Card(
+                              listOffer: listPublications,
+                            )
+                          : Container(),
                     ],
                   )),
                 ),
@@ -153,11 +155,14 @@ class _Card extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _Ofers(
-                    figuresOferts:
-                        listOffer[index]['description_publisher'] as List,
-                    stateOfert: listOffer[index]['state_offer'].toString(),
-                  ),
+                  listOffer[index]['description_publisher'] != null
+                      ? _Ofers(
+                          figuresOferts: listOffer[index]
+                              ['description_publisher'],
+                          stateOfert:
+                              listOffer[index]['state_offer'].toString(),
+                        )
+                      : Container()
                 ],
               ),
             ),
@@ -189,7 +194,7 @@ class _Ofers extends StatelessWidget {
                   height: 25,
                   width: 25,
                   child: Text(
-                    figuresOferts[index]['namePlayer'].toString(),
+                    figuresOferts[index].toString(),
                   ),
                 );
               })),

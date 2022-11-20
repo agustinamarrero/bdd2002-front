@@ -88,14 +88,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           body: json.encode(body));
 
       final response2 = json.decode(response.body);
-      if (response2['accepted'] == true) {
-        prefs.setString('email', state.email);
-        emit(
-          state.copyWith(
-            status: LoginStatus.loaded,
-          ),
-        );
-      }
+
+      prefs.setString('email', state.email);
+      emit(
+        state.copyWith(
+          status: LoginStatus.loaded,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

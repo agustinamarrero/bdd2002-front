@@ -17,7 +17,6 @@ class ActivePublicationsBloc
     on<ActivePublicationsStateChanged>(_onActivePublicationsStateChanged);
   }
 
-  //Ejecutar para obtener toda la lista de publicaciones
   FutureOr<void> _onActivePublicationsGet(ActivePublicationsGet event,
       Emitter<ActivePublicationsState> emit) async {
     final prefs = await SharedPreferences.getInstance();
@@ -46,15 +45,12 @@ class ActivePublicationsBloc
       ActivePublicationsStateChanged event,
       Emitter<ActivePublicationsState> emit) async {
     try {
-      // Publication publication = Publication(event.publication.namePlayer,
-      //     event.publication.statePublication, event.publication.id);
       final publication = {
         'publication_id': int.parse(event.publication.id),
         'activate': event.publication.statePublication == 'f' ? true : false,
       };
       Uri url = Uri.parse('http://localhost:8080/activate');
 
-      // var body = publication.toJson();
       var response = await http.post(url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(publication));
@@ -70,7 +66,5 @@ class ActivePublicationsBloc
         ),
       );
     }
-
-    //Si todo ok --> Mandar msj ok y redireccionarlo.
   }
 }

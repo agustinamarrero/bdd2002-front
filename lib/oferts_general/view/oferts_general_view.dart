@@ -1,6 +1,7 @@
 import 'package:bdd2022/active_oferts/active_oferts.dart';
 import 'package:bdd2022/active_publications/view/active_publications_route.dart';
 import 'package:bdd2022/create_publication/create_publication.dart';
+import 'package:bdd2022/main.dart';
 import 'package:bdd2022/ofert_someone/ofert_someone.dart';
 import 'package:bdd2022/oferts_general/oferts_general.dart';
 import 'package:bdd2022/oferts_user/oferts_user.dart';
@@ -206,14 +207,16 @@ class _Drawer extends StatelessWidget {
                   color: Colors.white,
                 ),
                 title: const Text(
-                  'Configuracion',
+                  'Cerrar sesión',
                   style: TextStyle(
                     fontFamily: 'Qatar2022',
                     color: Colors.white,
                     fontSize: 25,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MyApp.route());
+                },
               ),
             ],
           ),

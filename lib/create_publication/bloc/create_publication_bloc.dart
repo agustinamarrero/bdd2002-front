@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../models/ofert.dart';
 
 part 'create_publication_event.dart';
 part 'create_publication_state.dart';

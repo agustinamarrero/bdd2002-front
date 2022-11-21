@@ -49,8 +49,6 @@ class SignInView extends StatelessWidget {
                 child: TextButton(
                   onPressed: (() {
                     context.read<SignInBloc>().add(const SignInFormSubmited());
-                    //Si entro bien navegar.
-                    //   Navigator.of(context).push(OfertsGeneralRoute.route());
                   }),
                   style: TextButton.styleFrom(
                       shape: const StadiumBorder(),

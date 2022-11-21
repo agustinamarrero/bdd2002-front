@@ -1,5 +1,4 @@
 import 'package:bdd2022/login/login.dart';
-import 'package:bdd2022/ofert_someone/ofert_someone.dart';
 import 'package:bdd2022/sign_in/view/view.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +8,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static Route<void> route() {
+    return MaterialPageRoute(
+      builder: (ctx) {
+        return const MyHomePage();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

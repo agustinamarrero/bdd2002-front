@@ -108,7 +108,9 @@ class _Publication extends StatelessWidget {
       leading: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          Navigator.of(context).push(OfertsUserRoute.route());
+          Navigator.of(context).push(OfertsUserRoute(
+            idOffer: idOfert!,
+          ).route());
         },
         icon: const Icon(
           Icons.emoji_people,

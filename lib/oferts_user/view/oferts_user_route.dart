@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OfertsUserRoute extends StatelessWidget {
-  const OfertsUserRoute({Key? key}) : super(key: key);
+  const OfertsUserRoute({Key? key, required this.idOffer}) : super(key: key);
 
-  static Route<void> route() {
+  final String idOffer;
+
+  Route<void> route() {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
-          create: (_) => OfertsUserBloc(),
+          create: (_) => OfertsUserBloc()..add(OfertsUserGet(idOffer: idOffer)),
           child: const OfertsUserView(),
         );
       },

@@ -81,35 +81,7 @@ class _Card extends StatelessWidget {
   }) : super(key: key);
 
   final listPublications;
-  // final json = [
-  //   {
-  //     'namePlayer': 'Luis Suarez',
-  //     'figures': [
-  //       {
-  //         'namePlayer': 'Messi',
-  //       },
-  //       {
-  //         'namePlayer': 'Canvani',
-  //       },
-  //       {
-  //         'namePlayer': 'Pepe',
-  //       }
-  //     ],
-  //     'stateOfert': 'No aceptada',
-  //   },
-  //   {
-  //     'namePlayer': 'Messi',
-  //     'figures': [
-  //       {
-  //         'namePlayer': 'Juan',
-  //       },
-  //       {
-  //         'namePlayer': 'Luis',
-  //       },
-  //     ],
-  //     'stateOfert': 'Aceptada',
-  //   },
-  // ];
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -120,6 +92,7 @@ class _Card extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              height: 150,
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 1,
@@ -134,16 +107,60 @@ class _Card extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      listPublications[index]['namePlayer'].toString(),
+                      listPublications[index]['description_bidder'].toString(),
                       style: const TextStyle(
                         fontFamily: 'Qatar2022',
                         fontSize: 15,
                       ),
                     ),
                   ),
-                  _Ofers(
-                    figuresOferts: listPublications[index]['figures'] as List,
-                  ),
+                  listPublications[index]['description_publisher'] != null
+                      ? _Ofers(
+                          figuresOferts: listPublications[index]
+                              ['description_publisher'],
+                        )
+                      : Container(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: const StadiumBorder(),
+                          backgroundColor: const Color(0xff891638),
+                          disabledForegroundColor:
+                              Colors.white.withOpacity(0.38),
+                        ),
+                        onPressed: (() {
+                          context.read<OfertsUserBloc>().add(OfertsUserAccepted(
+                              idPublication: listPublications[index]
+                                  ['id_offer']));
+                        }),
+                        child: const Text(
+                          'Aceptar',
+                          style: TextStyle(
+                              fontFamily: 'Qatar2022', color: Colors.white),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: const StadiumBorder(),
+                          backgroundColor: const Color(0xff891638),
+                          disabledForegroundColor:
+                              Colors.white.withOpacity(0.38),
+                        ),
+                        onPressed: (() {
+                          context.read<OfertsUserBloc>().add(OfertsUserRejected(
+                              idPublication: listPublications[index]
+                                  ['id_offer']));
+                        }),
+                        child: const Text(
+                          'Rechazar',
+                          style: TextStyle(
+                              fontFamily: 'Qatar2022', color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -170,22 +187,10 @@ class _Ofers extends StatelessWidget {
               height: 25,
               width: 25,
               child: Text(
-                figuresOferts[index]['namePlayer'].toString(),
+                figuresOferts[index].toString(),
               ),
             );
           })),
-      trailing: TextButton(
-        style: TextButton.styleFrom(
-          shape: const StadiumBorder(),
-          backgroundColor: const Color(0xff891638),
-          disabledForegroundColor: Colors.white.withOpacity(0.38),
-        ),
-        onPressed: (() {}),
-        child: const Text(
-          'Aceptar',
-          style: TextStyle(fontFamily: 'Qatar2022', color: Colors.white),
-        ),
-      ),
     );
   }
 }

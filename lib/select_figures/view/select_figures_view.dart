@@ -1,21 +1,22 @@
 import 'package:bdd2022/ofert_someone/ofert_someone.dart';
+import 'package:bdd2022/select_figures/select_figures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OfertSomeoneView extends StatefulWidget {
-  const OfertSomeoneView({Key? key}) : super(key: key);
+class SelectFiguresView extends StatefulWidget {
+  const SelectFiguresView({Key? key}) : super(key: key);
 
   @override
-  State<OfertSomeoneView> createState() => _OfertSomeoneViewState();
+  State<SelectFiguresView> createState() => _SelectFiguresViewState();
 }
 
-class _OfertSomeoneViewState extends State<OfertSomeoneView> {
+class _SelectFiguresViewState extends State<SelectFiguresView> {
   // final listFigures = [
   @override
   Widget build(BuildContext context) {
     bool isChecked = false;
     final listFigures =
-        context.select((OfertSomeoneBloc bloc) => bloc.state.listFigures);
+        context.select((SelectFiguresBloc bloc) => bloc.state.listFigures);
     final status = context.select((OfertSomeoneBloc bloc) => bloc.state.status);
     return status == OfertSomeoneStatus.loaded
         ? AlertDialog(
@@ -102,9 +103,8 @@ class _OfertSomeoneViewState extends State<OfertSomeoneView> {
                   child: TextButton(
                     onPressed: (() {
                       context
-                          .read<OfertSomeoneBloc>()
-                          .add(OfertSomeoneCreate(listOffer: listFigures));
-                      //Navigator.of(context).push(OfertsGeneralRoute.route());
+                          .read<SelectFiguresBloc>()
+                          .add(SelectFiguresCreate(listOffer: listFigures));
                     }),
                     style: TextButton.styleFrom(
                         shape: const StadiumBorder(),

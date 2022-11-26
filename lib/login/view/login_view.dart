@@ -1,7 +1,6 @@
 import 'package:bdd2022/login/login.dart';
 import 'package:bdd2022/oferts_general/oferts_general.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginView extends StatelessWidget {
@@ -39,23 +38,25 @@ class LoginView extends StatelessWidget {
             ),
           ),
         ),
-        body: Column(
-          children: const [
-            SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'Ingrese sus datos',
-                  style: TextStyle(fontFamily: 'Qatar2022', fontSize: 25),
+        body: SingleChildScrollView(
+          child: Column(
+            children: const [
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    'Ingrese sus datos',
+                    style: TextStyle(fontFamily: 'Qatar2022', fontSize: 25),
+                  ),
                 ),
               ),
-            ),
-            Center(
-              child: SingleChildScrollView(
-                child: _Form(),
+              Center(
+                child: SingleChildScrollView(
+                  child: _Form(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

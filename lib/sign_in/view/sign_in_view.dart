@@ -48,7 +48,8 @@ class SignInView extends StatelessWidget {
                 padding: const EdgeInsets.all(30),
                 child: TextButton(
                   onPressed: (() {
-                    context.read<SignInBloc>().add(const SignInFormSubmited());
+                    Navigator.of(context).push(OfertsGeneralRoute.route());
+                    //  context.read<SignInBloc>().add(const SignInFormSubmited());
                   }),
                   style: TextButton.styleFrom(
                       shape: const StadiumBorder(),

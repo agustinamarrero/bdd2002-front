@@ -10,3 +10,11 @@ class ActiveOfertsGet extends ActiveOfertsEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ActiveOfertOfferUser extends ActiveOfertsEvent {
+  const ActiveOfertOfferUser({required this.listOffer});
+
+  final Map<String, dynamic> listOffer;
+  @override
+  List<Object?> get props => [listOffer];
+}

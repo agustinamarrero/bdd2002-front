@@ -2,43 +2,43 @@ import 'package:bdd2022/active_oferts/active_oferts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// final listPublications = [
-//   {
-//     'namePlayer': 'Luis Suarez',
-//     'figures': [
-//       {
-//         'namePlayer': 'Messi',
-//       },
-//       {
-//         'namePlayer': 'Canvani',
-//       },
-//       {
-//         'namePlayer': 'Pepe',
-//       }
-//     ],
-//     'stateOfert': 'No aceptada',
-//   },
-//   {
-//     'namePlayer': 'Messi',
-//     'figures': [
-//       {
-//         'namePlayer': 'Juan',
-//       },
-//       {
-//         'namePlayer': 'Luis',
-//       },
-//     ],
-//     'stateOfert': 'Aceptada',
-//   },
-// ];
+final listPublications = [
+  {
+    'description_bidder': 'Luis Suarez',
+    'description_publisher': [
+      {
+        'namePlayer': 'Messi',
+      },
+      {
+        'namePlayer': 'Canvani',
+      },
+      {
+        'namePlayer': 'Pepe',
+      }
+    ],
+    'state_offer': 'Rechazada',
+  },
+  {
+    'description_bidder': 'Messi',
+    'description_publisher': [
+      {
+        'namePlayer': 'Juan',
+      },
+      {
+        'namePlayer': 'Luis',
+      },
+    ],
+    'state_offer': 'Aceptada',
+  },
+];
 
 class ActiveOfertsView extends StatelessWidget {
   const ActiveOfertsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final listPublications =
-        context.select((ActiveOfertsBloc bloc) => bloc.state.listOffer);
+    // final listPublications =
+    //     context.select((ActiveOfertsBloc bloc) => bloc.state.listOffer);
     print(listPublications);
     final status = context.select((ActiveOfertsBloc bloc) => bloc.state.status);
     return status == ActiveOfertsStatus.error
@@ -157,6 +157,7 @@ class _Card extends StatelessWidget {
                   ),
                   listOffer[index]['description_publisher'] != null
                       ? _Ofers(
+                          listOffer: listOffer[index],
                           figuresOferts: listOffer[index]
                               ['description_publisher'],
                           stateOfert:
@@ -176,41 +177,50 @@ class _Ofers extends StatelessWidget {
     Key? key,
     required this.figuresOferts,
     required this.stateOfert,
+    required this.listOffer,
   }) : super(key: key);
 
   final List figuresOferts;
   final String stateOfert;
+  final Map<String, dynamic>? listOffer;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          title: ListView.builder(
-              shrinkWrap: true,
-              itemCount: figuresOferts.length,
-              itemBuilder: ((context, index) {
-                return SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Text(
-                    figuresOferts[index].toString(),
-                  ),
-                );
-              })),
-          trailing: TextButton(
-            style: TextButton.styleFrom(
-              shape: const StadiumBorder(),
-              backgroundColor: const Color(0xff891638),
-              disabledForegroundColor: Colors.white.withOpacity(0.38),
-            ),
-            onPressed: (() {}),
-            child: const Text(
-              'Borrar',
-              style: TextStyle(fontFamily: 'Qatar2022', color: Colors.white),
-            ),
-          ),
-        ),
+            title: ListView.builder(
+                shrinkWrap: true,
+                itemCount: figuresOferts.length,
+                itemBuilder: ((context, index) {
+                  return SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: Text(
+                      figuresOferts[index].toString(),
+                    ),
+                  );
+                })),
+            trailing: stateOfert == 'Rechazada'
+                ? TextButton(
+                    style: TextButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      backgroundColor: const Color(0xff891638),
+                      disabledForegroundColor: Colors.white.withOpacity(0.38),
+                    ),
+                    onPressed: listOffer!.isNotEmpty
+                        ? (() {
+                            context.read<ActiveOfertsBloc>().add(
+                                ActiveOfertOfferUser(listOffer: listOffer!));
+                          })
+                        : null,
+                    child: const Text(
+                      'Contraoferta',
+                      style: TextStyle(
+                          fontFamily: 'Qatar2022', color: Colors.white),
+                    ),
+                  )
+                : const SizedBox()),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

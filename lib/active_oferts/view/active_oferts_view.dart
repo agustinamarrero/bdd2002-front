@@ -1,53 +1,28 @@
 import 'package:bdd2022/active_oferts/active_oferts.dart';
+import 'package:bdd2022/select_figures/select_figures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-final listPublications = [
-  {
-    'description_bidder': 'Luis Suarez',
-    'description_publisher': [
-      {
-        'namePlayer': 'Messi',
-      },
-      {
-        'namePlayer': 'Canvani',
-      },
-      {
-        'namePlayer': 'Pepe',
-      }
-    ],
-    'state_offer': 'Rechazada',
-  },
-  {
-    'description_bidder': 'Messi',
-    'description_publisher': [
-      {
-        'namePlayer': 'Juan',
-      },
-      {
-        'namePlayer': 'Luis',
-      },
-    ],
-    'state_offer': 'Aceptada',
-  },
-];
+//
 
 class ActiveOfertsView extends StatelessWidget {
   const ActiveOfertsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final listPublications =
-    //     context.select((ActiveOfertsBloc bloc) => bloc.state.listOffer);
+    final listPublications =
+        context.select((ActiveOfertsBloc bloc) => bloc.state.listOffer);
 
     final status = context.select((ActiveOfertsBloc bloc) => bloc.state.status);
     return status == ActiveOfertsStatus.error
         ? BlocListener<ActiveOfertsBloc, ActiveOfertsState>(
             listener: (context, state) {
-              Navigator.of(context).push()
+              Navigator.of(context).push(
+                  SelectFiguresRoute(listPublications: listPublications)
+                      .route());
             },
             listenWhen: (previous, current) {
-             return current.status == ActiveOfertsStatus.loaded;
+              return current.status == ActiveOfertsStatus.loaded;
             },
             child: Scaffold(
               appBar: AppBar(

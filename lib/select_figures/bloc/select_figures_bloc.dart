@@ -16,7 +16,7 @@ class SelectFiguresBloc extends Bloc<SelectFiguresEvent, SelectFiguresState> {
     on<SelectFiguresCreate>(_onSelectFiguresCreate);
   }
 
-  final Map<String, dynamic> listPublications;
+  final List listPublications;
 
   FutureOr<void> _onOfertSomeoneGetFigures(
       SelectFiguresGetFigures event, Emitter<SelectFiguresState> emit) async {
@@ -65,7 +65,7 @@ class SelectFiguresBloc extends Bloc<SelectFiguresEvent, SelectFiguresState> {
       'figures': state.listFiguresAdd,
     };
 
-    createOffer.addAll(listPublications);
+    //createOffer.addAll(listPublications);
 
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"},

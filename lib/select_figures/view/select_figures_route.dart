@@ -8,7 +8,7 @@ class SelectFiguresRoute extends StatelessWidget {
     required this.listPublications,
   }) : super(key: key);
 
-  final Map<String, dynamic> listPublications;
+  final List listPublications;
   Route<void> route() {
     return MaterialPageRoute(
       builder: (ctx) {

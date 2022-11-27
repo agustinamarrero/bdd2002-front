@@ -56,50 +56,59 @@ class ActiveOfertsView extends StatelessWidget {
         //             )
         //           ])
         //     :
-        Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              backgroundColor: const Color(0xff891638),
-              title: const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'Ofertas',
-                  style: TextStyle(
-                    fontFamily: 'Qatar2022',
-                    fontSize: 25,
+        BlocListener<ActiveOfertsBloc, ActiveOfertsState>(
+            listener: (context, state) {
+              Navigator.of(context).push(
+                  SelectFiguresRoute(listPublications: listPublications)
+                      .route());
+            },
+            listenWhen: (previous, current) {
+              return current.status == ActiveOfertsStatus.loaded;
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                backgroundColor: const Color(0xff891638),
+                title: const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    'Ofertas',
+                    style: TextStyle(
+                      fontFamily: 'Qatar2022',
+                      fontSize: 25,
+                    ),
                   ),
                 ),
               ),
-            ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Aqui puede observar las ofertas que usted realizo ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Qatar2022',
-                        fontSize: 17,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Aqui puede observar las ofertas que usted realizo ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Qatar2022',
+                          fontSize: 17,
+                        ),
                       ),
                     ),
-                  ),
-                  listPublications.isNotEmpty
-                      ? _Card(
-                          listOffer: listPublications,
-                        )
-                      : Container(),
-                ],
-              )),
-            ),
-          );
+                    listPublications.isNotEmpty
+                        ? _Card(
+                            listOffer: listPublications,
+                          )
+                        : Container(),
+                  ],
+                )),
+              ),
+            ));
   }
 }
 
@@ -186,7 +195,7 @@ class _Ofers extends StatelessWidget {
                     ),
                   );
                 })),
-            trailing: stateOfert == 'Rechazada'
+            trailing: stateOfert == 'RECHAZADA'
                 ? TextButton(
                     style: TextButton.styleFrom(
                       shape: const StadiumBorder(),

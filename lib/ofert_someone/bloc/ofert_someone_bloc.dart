@@ -11,29 +11,9 @@ part 'ofert_someone_state.dart';
 
 class OfertSomeoneBloc extends Bloc<OfertSomeoneEvent, OfertSomeoneState> {
   OfertSomeoneBloc() : super(OfertSomeoneState.initial()) {
-    on<OfertSomeoneSetId>(_onOfertSomeoneSetId);
     on<OfertSomeoneGetFigures>(_onOfertSomeoneGetFigures);
     on<OfertSomeoneCreate>(_onOfertSomeoneCreate);
     on<OfertSomeoneChanged>(_onOfertSomeoneChanged);
-  }
-
-  FutureOr<void> _onOfertSomeoneSetId(
-      OfertSomeoneSetId event, Emitter<OfertSomeoneState> emit) async {
-    final prefs = await SharedPreferences.getInstance();
-    final description = prefs.getString('description');
-    final stateFigure = prefs.getString('stateFigure');
-    final nameUser = prefs.getString('nameUser');
-    final id = prefs.getString('id');
-    print(id);
-    print(stateFigure);
-    print(description);
-    print(nameUser);
-    emit(
-      state.copyWith(
-          // idPublication: idPublication,
-          ),
-    );
-    print(state.idPublication);
   }
 
   FutureOr<void> _onOfertSomeoneGetFigures(

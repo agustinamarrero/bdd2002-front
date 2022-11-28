@@ -17,7 +17,8 @@ class _SelectFiguresViewState extends State<SelectFiguresView> {
     bool isChecked = false;
     final listFigures =
         context.select((SelectFiguresBloc bloc) => bloc.state.listFigures);
-    final status = context.select((OfertSomeoneBloc bloc) => bloc.state.status);
+    final status =
+        context.select((SelectFiguresBloc bloc) => bloc.state.status);
     return status == OfertSomeoneStatus.loaded
         ? AlertDialog(
             title: const Text('Acción satisfactoria'),
@@ -74,8 +75,8 @@ class _SelectFiguresViewState extends State<SelectFiguresView> {
                         child: TextButton(
                           onPressed: (() {
                             context
-                                .read<OfertSomeoneBloc>()
-                                .add(OfertSomeoneChanged(listFigures[index]));
+                                .read<SelectFiguresBloc>()
+                                .add(SelectFiguresChanged(listFigures[index]));
                           }),
                           style: TextButton.styleFrom(
                               shape: const StadiumBorder(),

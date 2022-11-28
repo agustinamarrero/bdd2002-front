@@ -14,6 +14,7 @@ class SelectFiguresBloc extends Bloc<SelectFiguresEvent, SelectFiguresState> {
       : super(SelectFiguresState.initial()) {
     on<SelectFiguresGetFigures>(_onOfertSomeoneGetFigures);
     on<SelectFiguresCreate>(_onSelectFiguresCreate);
+    on<SelectFiguresChanged>(_onSelectFiguresChanged);
   }
 
   final List listPublications;
@@ -55,17 +56,16 @@ class SelectFiguresBloc extends Bloc<SelectFiguresEvent, SelectFiguresState> {
     final email = prefs.getString('email');
     Uri url = Uri.parse('http://localhost:8080/addOffer');
 
-    final id = prefs.getString('id');
     state.listFiguresAdd.remove('head');
     listPublications.remove('publication_description');
     listPublications.remove('state_offer');
+
     final createOffer = {
+      'id_publication': listPublications[0]['publication_id'],
       'email_bidder': email,
-      'state_offer': 'Contraoferta',
+      'state_offer': 'CONTRAOFERTA',
       'figures': state.listFiguresAdd,
     };
-
-    //createOffer.addAll(listPublications);
 
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"},
@@ -75,6 +75,16 @@ class SelectFiguresBloc extends Bloc<SelectFiguresEvent, SelectFiguresState> {
       state.copyWith(
         status: SelectFiguresStatus.loaded,
       ),
+    );
+  }
+
+  FutureOr<void> _onSelectFiguresChanged(
+      SelectFiguresChanged event, Emitter<SelectFiguresState> emit) {
+    final aux = state.listFiguresAdd;
+    aux.add(event.list);
+
+    emit(
+      state.copyWith(listFiguresAdd: aux),
     );
   }
 }

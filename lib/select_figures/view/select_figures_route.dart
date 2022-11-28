@@ -13,7 +13,8 @@ class SelectFiguresRoute extends StatelessWidget {
     return MaterialPageRoute(
       builder: (ctx) {
         return BlocProvider(
-          create: (_) => SelectFiguresBloc(listPublications: listPublications),
+          create: (_) => SelectFiguresBloc(listPublications: listPublications)
+            ..add(SelectFiguresGetFigures()),
           child: const SelectFiguresView(),
         );
       },

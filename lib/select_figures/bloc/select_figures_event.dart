@@ -11,6 +11,13 @@ class SelectFiguresGetFigures extends SelectFiguresEvent {
   List<Object?> get props => [];
 }
 
+class SelectFiguresChanged extends SelectFiguresEvent {
+  const SelectFiguresChanged(this.list);
+  final Map<String, dynamic> list;
+  @override
+  List<Object?> get props => [list];
+}
+
 class SelectFiguresCreate extends SelectFiguresEvent {
   const SelectFiguresCreate({
     required this.listOffer,
